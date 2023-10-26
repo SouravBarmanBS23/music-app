@@ -9,24 +9,21 @@ Future<void> main() async {
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
-      androidShowNotificationBadge: true,
-      notificationColor : Colors.white,
+    androidShowNotificationBadge: true,
+    notificationColor: Colors.white,
   );
   runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      // Use builder only if you need to use library outside ScreenUtilInit context
-      builder: (_ , child) {
+      builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
@@ -37,10 +34,5 @@ class MyApp extends StatelessWidget {
         );
       },
     );
-
-
-
-
-
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PageViewItems{
-
+class PageViewItems {
   static List<Widget> pageView = [
     Container(
       alignment: Alignment.center,
@@ -27,6 +26,4 @@ class PageViewItems{
       child: const Text('Favourite'),
     ),
   ];
-
-
 }
