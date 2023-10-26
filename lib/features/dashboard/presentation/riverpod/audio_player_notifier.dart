@@ -85,18 +85,30 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
   }
 
   Future<void> checkPermission() async {
-    var perm = await Permission.storage.request();
+    final permission = ref.read(permissionGranted.notifier);
+    var perm = await Permission.storage.status;
+
     if (perm.isGranted) {
-      return;
+      permission.state = 1;
     } else {
-      return checkPermission();
+      permission.state = 0;
     }
   }
 
-  void playPrevious(String? uri, int index,SongModel songModel) {
+  // Future<void> checkPermission() async {
+  //   var perm = await Permission.storage.request();
+  //   if (perm.isGranted) {
+  //     return;
+  //   } else {
+  //     return checkPermission();
+  //   }
+  // }
+
+  void playPrevious(String? uri, int index, SongModel songModel) {
     if (index == 0) {
       audioPlayer.setAudioSource(
-        AudioSource.uri(Uri.parse(uri!),
+        AudioSource.uri(
+          Uri.parse(uri!),
           tag: MediaItem(
             // Specify a unique ID for each media item:
             id: '${songModel.id}',
@@ -113,15 +125,17 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
     } else {
       try {
         audioPlayer.setAudioSource(
-          AudioSource.uri(Uri.parse(uri!),
+          AudioSource.uri(
+            Uri.parse(uri!),
             tag: MediaItem(
-            // Specify a unique ID for each media item:
-            id: '${songModel.id}',
-            // Metadata to display in the notification:
-            album: "${songModel.album}",
-            title: songModel.displayNameWOExt,
-            artUri: Uri.parse('https://example.com/albumart.jpg'),
-          ),),
+              // Specify a unique ID for each media item:
+              id: '${songModel.id}',
+              // Metadata to display in the notification:
+              album: "${songModel.album}",
+              title: songModel.displayNameWOExt,
+              artUri: Uri.parse('https://example.com/albumart.jpg'),
+            ),
+          ),
         );
         audioPlayer.play();
         state = AudioPlayerState(playIndex: index - 1, isPlaying: true);
@@ -132,10 +146,11 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
     }
   }
 
-  void playForward(String? uri, int index, int limit,SongModel songModel) {
+  void playForward(String? uri, int index, int limit, SongModel songModel) {
     if (index == limit) {
       audioPlayer.setAudioSource(
-        AudioSource.uri(Uri.parse(uri!),
+        AudioSource.uri(
+          Uri.parse(uri!),
           tag: MediaItem(
             // Specify a unique ID for each media item:
             id: '${songModel.id}',
@@ -152,7 +167,8 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
     } else {
       try {
         audioPlayer.setAudioSource(
-          AudioSource.uri(Uri.parse(uri!),
+          AudioSource.uri(
+            Uri.parse(uri!),
             tag: MediaItem(
               // Specify a unique ID for each media item:
               id: '${songModel.id}',
