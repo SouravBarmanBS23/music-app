@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -10,6 +11,7 @@ import 'audio_player_state.dart';
 class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
   final audioQuery = OnAudioQuery();
   final audioPlayer = AudioPlayer();
+  final storagePermission = Permission.storage;
 
   @override
   AudioPlayerState build() {
@@ -48,7 +50,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
       final position = ref.read(positionProvider.notifier);
       final value = ref.read(valueProvider.notifier);
       position.state = p.toString().split('.')[0];
-      value.state = p!.inSeconds.toDouble();
+      value.state = p.inSeconds.toDouble();
     });
   }
 
@@ -84,25 +86,25 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
     }
   }
 
-  Future<void> checkPermission() async {
-    final permission = ref.read(permissionGranted.notifier);
-    var perm = await Permission.storage.status;
+  Future<void> requestPermission() async {
+    const permission = Permission.storage;
+    final permissionNotifier = ref.read(permissionGranted.notifier);
 
-    if (perm.isGranted) {
-      permission.state = 1;
-    } else {
-      permission.state = 0;
+    if (await permission.status.isDenied) {
+      final result = await permission.request();
+
+      if (result.isGranted) {
+        permissionNotifier.state = 1;
+      } else if (result.isDenied) {
+        permissionNotifier.state = 0;
+        SystemNavigator.pop();
+      } else if (result.isPermanentlyDenied) {
+        openAppSettings();
+      }
+    } else if (await permission.status.isGranted) {
+      permissionNotifier.state = 1;
     }
   }
-
-  // Future<void> checkPermission() async {
-  //   var perm = await Permission.storage.request();
-  //   if (perm.isGranted) {
-  //     return;
-  //   } else {
-  //     return checkPermission();
-  //   }
-  // }
 
   void playPrevious(String? uri, int index, SongModel songModel) {
     if (index == 0) {

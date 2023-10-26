@@ -18,13 +18,15 @@ class PlayerPage extends ConsumerStatefulWidget {
 }
 
 class _PlayerPageState extends ConsumerState<PlayerPage> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future((){
-      ref.read(audioPlayerProvider.notifier).playSongs(widget.songModel[widget.songIndex].uri, widget.songIndex,widget.songModel[widget.songIndex]);
+    Future(() {
+      ref.read(audioPlayerProvider.notifier).playSongs(
+          widget.songModel[widget.songIndex].uri,
+          widget.songIndex,
+          widget.songModel[widget.songIndex]);
     });
   }
 
@@ -125,7 +127,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -133,7 +135,14 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                       IconButton(
                         onPressed: () {
                           HapticFeedback.mediumImpact();
-                          notifier.playPrevious(widget.songModel[state.playIndex == 0 ? 0 : state.playIndex - 1].uri, state.playIndex,widget.songModel[state.playIndex - 1]);
+                          notifier.playPrevious(
+                              widget
+                                  .songModel[state.playIndex == 0
+                                      ? 0
+                                      : state.playIndex - 1]
+                                  .uri,
+                              state.playIndex,
+                              widget.songModel[state.playIndex - 1]);
                         },
                         icon: const Icon(
                           Icons.skip_previous,
@@ -170,7 +179,11 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                       IconButton(
                         onPressed: () {
                           HapticFeedback.mediumImpact();
-                          notifier.playForward(widget.songModel[state.playIndex + 1].uri,state.playIndex,widget.songModel.length,widget.songModel[state.playIndex + 1]);
+                          notifier.playForward(
+                              widget.songModel[state.playIndex + 1].uri,
+                              state.playIndex,
+                              widget.songModel.length,
+                              widget.songModel[state.playIndex + 1]);
                         },
                         icon: const Icon(
                           Icons.skip_next,
