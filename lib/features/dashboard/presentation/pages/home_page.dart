@@ -2,10 +2,10 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_provider.dart';
 import 'package:music_app/features/dashboard/presentation/widgets/music_list.dart';
-import '../../../../core/constants/app_color.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -17,7 +17,6 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initializeApp();
   }
@@ -38,23 +37,23 @@ class _HomePageState extends ConsumerState<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 const Icon(
-                  Icons.search,
+                  Icons.queue_music_sharp,
                   color: Colors.white,
                   size: 30,
                 ),
                 Text(
                   'Music app',
                   style: AppTextStyle.textStyleOne(
-                      Colors.white, 24, FontWeight.w500),
+                      Colors.white, 24, FontWeight.w500,),
                 ),
                 const Icon(
-                  Icons.queue_music_sharp,
+                  Icons.search,
                   color: Colors.white,
                   size: 30,
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -70,7 +69,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     alignment: Alignment.center,
                     margin: const EdgeInsets.only(top: 15),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(20),
                       color: Colors.purple.shade200,
                       image: const DecorationImage(
                         image: AssetImage('images/music-1.jpg'),
@@ -81,13 +80,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                     height: 0.2.sh,
                     child: DefaultTextStyle(
                       style: const TextStyle(
-                        fontSize: 30.0,
+                        fontSize: 30,
                         fontWeight: FontWeight.w900,
                         color: Colors.black,
                       ),
                       child: AnimatedTextKit(
                         repeatForever: true,
-                        pause: const Duration(milliseconds: 1000),
                         animatedTexts: [
                           TypewriterAnimatedText(
                             "Let's play music",
@@ -95,7 +93,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                           ),
                         ],
                         onTap: () {
-                          print("Tap Event");
                         },
                       ),
                     ),
@@ -109,7 +106,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Text(
                 'All songs ',
                 style: AppTextStyle.textStyleOne(
-                    Colors.white, 20, FontWeight.w600),
+                    Colors.white, 20, FontWeight.w600,),
               ),
             ),
             const MusicList(),

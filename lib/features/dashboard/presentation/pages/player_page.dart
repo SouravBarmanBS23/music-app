@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:music_app/core/constants/app_color.dart';
+import 'package:music_app/core/constants/text_style.dart';
+import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import '../../../../core/constants/text_style.dart';
-import '../riverpod/audio_player_provider.dart';
 
 class PlayerPage extends ConsumerStatefulWidget {
   const PlayerPage(
-      {super.key, required this.songModel, required this.songIndex});
+      {required this.songModel, required this.songIndex, super.key,});
 
   final List<SongModel> songModel;
   final int songIndex;
@@ -20,13 +22,13 @@ class PlayerPage extends ConsumerStatefulWidget {
 class _PlayerPageState extends ConsumerState<PlayerPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
     Future(() {
       ref.read(audioPlayerProvider.notifier).playSongs(
           widget.songModel[widget.songIndex].uri,
           widget.songIndex,
-          widget.songModel[widget.songIndex]);
+          widget.songModel[widget.songIndex],);
     });
   }
 
@@ -41,26 +43,27 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
     final max = ref.watch(maxProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xff7360a0),
+      backgroundColor: const Color(0xff907cbe),
       body: Column(
         children: [
           // First section
           Expanded(
             flex: 3,
             child: Container(
+              alignment: Alignment.center,
               padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                color: Color(0xff141414),
-              ),
-              child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  image: DecorationImage(
-                    image: AssetImage('images/music-3.gif'),
-                    fit: BoxFit.contain,
-                  ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
                 ),
+                color: bgColor,
+              ),
+              child: Lottie.asset(
+                'lottie-animation/music-animation-2.json',
+                repeat: true,
+                fit: BoxFit.cover,
+                // reverse: true,
               ),
             ),
           ),
@@ -79,7 +82,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.textStyleOne(
-                        Colors.white, 22, FontWeight.w500),
+                        Colors.white, 22, FontWeight.w500,),
                   ),
                 ),
                 Container(
@@ -91,7 +94,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                     '${widget.songModel[state.playIndex].artist}',
                     maxLines: 1,
                     style: AppTextStyle.textStyleOne(
-                        Colors.white, 16, FontWeight.w500),
+                        Colors.white, 16, FontWeight.w500,),
                   ),
                 ),
                 Container(
@@ -104,9 +107,9 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                   child: Row(
                     children: [
                       Text(
-                        position.toString(),
+                        position,
                         style: AppTextStyle.textStyleOne(
-                            Colors.white, 16, FontWeight.w500),
+                            Colors.white, 16, FontWeight.w500,),
                       ),
                       Expanded(
                           child: Slider(
@@ -118,11 +121,11 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                               onChanged: (value) {
                                 notifier.changeDurationToSeconds(value.toInt());
                                 value = value;
-                              })),
+                              },),),
                       Text(
-                        duration.toString(),
+                        duration,
                         style: AppTextStyle.textStyleOne(
-                            Colors.white, 16, FontWeight.w500),
+                            Colors.white, 16, FontWeight.w500,),
                       ),
                     ],
                   ),
@@ -142,7 +145,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                                       : state.playIndex - 1]
                                   .uri,
                               state.playIndex,
-                              widget.songModel[state.playIndex - 1]);
+                              widget.songModel[state.playIndex - 1],);
                         },
                         icon: const Icon(
                           Icons.skip_previous,
@@ -183,7 +186,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                               widget.songModel[state.playIndex + 1].uri,
                               state.playIndex,
                               widget.songModel.length,
-                              widget.songModel[state.playIndex + 1]);
+                              widget.songModel[state.playIndex + 1],);
                         },
                         icon: const Icon(
                           Icons.skip_next,
@@ -193,7 +196,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_notifier.dart';
-import 'audio_player_state.dart';
+import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_state.dart';
 
 final audioPlayerProvider =
     NotifierProvider<AudioPlayerNotifier, AudioPlayerState>(
-        AudioPlayerNotifier.new);
+        AudioPlayerNotifier.new,);
 
 final durationProvider = StateProvider((ref) => '');
 final positionProvider = StateProvider((ref) => '');

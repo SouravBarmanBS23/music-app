@@ -42,6 +42,14 @@ dependencies:
   on_audio_query: 2.9.0
   permission_handler: 11.0.1
   just_audio_background: 0.0.1-beta.10
+  lottie: ^2.7.0
+  input_form_field:
+    git:
+      url: git@github.com:momshaddinury/input_form_field.git
+      ref: version-0.0.6
+  core:
+    path: modules/core
+  connectivity_plus: 5.0.0
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +83,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/
+    - lottie-animation/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

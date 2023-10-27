@@ -1,12 +1,12 @@
+import 'package:core/core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_provider.dart';
+import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_state.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import 'audio_player_provider.dart';
-import 'audio_player_state.dart';
 
 class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
   final audioQuery = OnAudioQuery();
@@ -18,6 +18,14 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
     return AudioPlayerState(
       playIndex: 0,
       isPlaying: false,
+    );
+  }
+
+  Future<List<SongModel>> querySongs() async {
+    return audioQuery.querySongs(
+      ignoreCase: true,
+      orderType: OrderType.ASC_OR_SMALLER,
+      uriType: UriType.EXTERNAL,
     );
   }
 
@@ -55,7 +63,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
   }
 
   void changeDurationToSeconds(seconds) {
-    var duration = Duration(seconds: seconds);
+    final duration = Duration(seconds: seconds);
     audioPlayer.seek(duration);
   }
 
@@ -63,26 +71,27 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
     try {
       if (uri != null) {
         final uriData = Uri.parse(uri);
-        audioPlayer.setAudioSource(AudioSource.uri(
-          uriData,
-          tag: MediaItem(
-            // Specify a unique ID for each media item:
-            id: '${songModel.id}',
-            // Metadata to display in the notification:
-            album: "${songModel.album}",
-            title: songModel.displayNameWOExt,
-            artUri: Uri.parse('https://example.com/albumart.jpg'),
-          ),
-        ));
-
-        audioPlayer.play();
+        audioPlayer
+          ..setAudioSource(
+            AudioSource.uri(
+              uriData,
+              tag: MediaItem(
+                // Specify a unique ID for each media item:
+                id: '${songModel.id}',
+                // Metadata to display in the notification:
+                album: '${songModel.album}',
+                title: songModel.displayNameWOExt,
+                artUri: Uri.parse(
+                    'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg'),
+              ),
+            ),
+          )
+          ..play();
         state = AudioPlayerState(playIndex: index, isPlaying: true);
         updatePosition();
-      } else {
-        print("Error: URI is null.");
-      }
+      } else {}
     } catch (e) {
-      print("Error while playing the audio: $e");
+      Log.debug('Error while playing the audio: $e');
     }
   }
 
@@ -97,9 +106,9 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
         permissionNotifier.state = 1;
       } else if (result.isDenied) {
         permissionNotifier.state = 0;
-        SystemNavigator.pop();
+        await SystemNavigator.pop();
       } else if (result.isPermanentlyDenied) {
-        openAppSettings();
+        await openAppSettings();
       }
     } else if (await permission.status.isGranted) {
       permissionNotifier.state = 1;
@@ -108,84 +117,90 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
 
   void playPrevious(String? uri, int index, SongModel songModel) {
     if (index == 0) {
-      audioPlayer.setAudioSource(
-        AudioSource.uri(
-          Uri.parse(uri!),
-          tag: MediaItem(
-            // Specify a unique ID for each media item:
-            id: '${songModel.id}',
-            // Metadata to display in the notification:
-            album: "${songModel.album}",
-            title: songModel.displayNameWOExt,
-            artUri: Uri.parse('https://example.com/albumart.jpg'),
-          ),
-        ),
-      );
-      audioPlayer.play();
-      state = AudioPlayerState(playIndex: index, isPlaying: true);
-      updatePosition();
-    } else {
-      try {
-        audioPlayer.setAudioSource(
+      audioPlayer
+        ..setAudioSource(
           AudioSource.uri(
             Uri.parse(uri!),
             tag: MediaItem(
               // Specify a unique ID for each media item:
               id: '${songModel.id}',
               // Metadata to display in the notification:
-              album: "${songModel.album}",
+              album: '${songModel.album}',
               title: songModel.displayNameWOExt,
-              artUri: Uri.parse('https://example.com/albumart.jpg'),
+              artUri: Uri.parse(
+                  'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg'),
             ),
           ),
-        );
-        audioPlayer.play();
+        )
+        ..play();
+      state = AudioPlayerState(playIndex: index, isPlaying: true);
+      updatePosition();
+    } else {
+      try {
+        audioPlayer
+          ..setAudioSource(
+            AudioSource.uri(
+              Uri.parse(uri!),
+              tag: MediaItem(
+                // Specify a unique ID for each media item:
+                id: '${songModel.id}',
+                // Metadata to display in the notification:
+                album: '${songModel.album}',
+                title: songModel.displayNameWOExt,
+                artUri: Uri.parse('https://example.com/albumart.jpg'),
+              ),
+            ),
+          )
+          ..play();
         state = AudioPlayerState(playIndex: index - 1, isPlaying: true);
         updatePosition();
       } catch (e) {
-        print(e);
+        Log.debug(e.toString());
       }
     }
   }
 
   void playForward(String? uri, int index, int limit, SongModel songModel) {
     if (index == limit) {
-      audioPlayer.setAudioSource(
-        AudioSource.uri(
-          Uri.parse(uri!),
-          tag: MediaItem(
-            // Specify a unique ID for each media item:
-            id: '${songModel.id}',
-            // Metadata to display in the notification:
-            album: "${songModel.album}",
-            title: songModel.displayNameWOExt,
-            artUri: Uri.parse('https://example.com/albumart.jpg'),
-          ),
-        ),
-      );
-      audioPlayer.play();
-      state = AudioPlayerState(playIndex: index, isPlaying: true);
-      updatePosition();
-    } else {
-      try {
-        audioPlayer.setAudioSource(
+      audioPlayer
+        ..setAudioSource(
           AudioSource.uri(
             Uri.parse(uri!),
             tag: MediaItem(
               // Specify a unique ID for each media item:
               id: '${songModel.id}',
               // Metadata to display in the notification:
-              album: "${songModel.album}",
+              album: '${songModel.album}',
               title: songModel.displayNameWOExt,
-              artUri: Uri.parse('https://example.com/albumart.jpg'),
+              artUri: Uri.parse(
+                  'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg'),
             ),
           ),
-        );
-        audioPlayer.play();
+        )
+        ..play();
+      state = AudioPlayerState(playIndex: index, isPlaying: true);
+      updatePosition();
+    } else {
+      try {
+        audioPlayer
+          ..setAudioSource(
+            AudioSource.uri(
+              Uri.parse(uri!),
+              tag: MediaItem(
+                // Specify a unique ID for each media item:
+                id: '${songModel.id}',
+                // Metadata to display in the notification:
+                album: '${songModel.album}',
+                title: songModel.displayNameWOExt,
+                artUri: Uri.parse('https://example.com/albumart.jpg'),
+              ),
+            ),
+          )
+          ..play();
         state = AudioPlayerState(playIndex: index + 1, isPlaying: true);
         updatePosition();
       } catch (e) {
-        print(e);
+        Log.debug(e.toString());
       }
     }
   }

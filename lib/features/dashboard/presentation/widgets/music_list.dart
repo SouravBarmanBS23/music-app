@@ -26,12 +26,7 @@ class _MusicListState extends ConsumerState<MusicList> {
       return SizedBox(
         height: 0.65.sh,
         child: FutureBuilder<List<SongModel>>(
-          future: notifier.audioQuery.querySongs(
-            ignoreCase: true,
-            orderType: OrderType.ASC_OR_SMALLER,
-            sortType: null,
-            uriType: UriType.EXTERNAL,
-          ),
+          future: notifier.querySongs(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final songsList = snapshot.data;
