@@ -4,7 +4,8 @@ import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_
 
 final audioPlayerProvider =
     NotifierProvider<AudioPlayerNotifier, AudioPlayerState>(
-        AudioPlayerNotifier.new,);
+  AudioPlayerNotifier.new,
+);
 
 final durationProvider = StateProvider((ref) => '');
 final positionProvider = StateProvider((ref) => '');
@@ -13,4 +14,4 @@ final valueProvider = StateProvider((ref) => 0.0);
 final maxProvider = StateProvider((ref) => 0.0);
 
 final totalSongs = StateProvider((ref) => 0);
-var permissionGranted = StateProvider((ref) => 0);
+final permissionGranted = StateProvider((ref) => 0);

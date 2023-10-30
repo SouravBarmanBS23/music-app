@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:flutter/animation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
@@ -12,6 +13,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
   final audioQuery = OnAudioQuery();
   final audioPlayer = AudioPlayer();
   final storagePermission = Permission.storage;
+  late final AnimationController animationController;
 
   @override
   AudioPlayerState build() {
@@ -62,7 +64,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
     });
   }
 
-  void changeDurationToSeconds(seconds) {
+  void changeDurationToSeconds(int seconds) {
     final duration = Duration(seconds: seconds);
     audioPlayer.seek(duration);
   }
@@ -82,7 +84,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
                 album: '${songModel.album}',
                 title: songModel.displayNameWOExt,
                 artUri: Uri.parse(
-                    'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg'),
+                    'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',),
               ),
             ),
           )
@@ -122,13 +124,11 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
           AudioSource.uri(
             Uri.parse(uri!),
             tag: MediaItem(
-              // Specify a unique ID for each media item:
               id: '${songModel.id}',
-              // Metadata to display in the notification:
               album: '${songModel.album}',
               title: songModel.displayNameWOExt,
               artUri: Uri.parse(
-                  'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg'),
+                  'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',),
             ),
           ),
         )
@@ -147,7 +147,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
                 // Metadata to display in the notification:
                 album: '${songModel.album}',
                 title: songModel.displayNameWOExt,
-                artUri: Uri.parse('https://example.com/albumart.jpg'),
+                artUri: Uri.parse('https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',),
               ),
             ),
           )
@@ -173,7 +173,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
               album: '${songModel.album}',
               title: songModel.displayNameWOExt,
               artUri: Uri.parse(
-                  'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg'),
+                  'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',),
             ),
           ),
         )
@@ -192,7 +192,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
                 // Metadata to display in the notification:
                 album: '${songModel.album}',
                 title: songModel.displayNameWOExt,
-                artUri: Uri.parse('https://example.com/albumart.jpg'),
+                artUri: Uri.parse('https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',),
               ),
             ),
           )
