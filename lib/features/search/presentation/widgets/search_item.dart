@@ -37,7 +37,7 @@ class _MusicListState extends ConsumerState<SearchItem> {
               margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.white, //const Color(0xff1c1f29),
+                color: Colors.white10, //const Color(0xff1c1f29),
               ),
               child: ListTile(
                 shape: RoundedRectangleBorder(
@@ -50,14 +50,14 @@ class _MusicListState extends ConsumerState<SearchItem> {
                   nullArtworkWidget: const Icon(
                     Icons.music_note,
                     size: 30,
-                    color: Colors.black87,
+                    color: Colors.white,
                   ),
                 ),
                 title: Text(
                   song.displayNameWOExt,
                   maxLines: 1,
                   style: AppTextStyle.textStyleOne(
-                    Colors.black87,
+                    Colors.white,
                     20,
                     FontWeight.w400,
                   ),
@@ -66,7 +66,7 @@ class _MusicListState extends ConsumerState<SearchItem> {
                   song.artist ?? 'Unknown',
                   maxLines: 1,
                   style: AppTextStyle.textStyleOne(
-                    Colors.black87,
+                    Colors.white,
                     15,
                     FontWeight.w400,
                   ),
@@ -121,10 +121,10 @@ class _MusicListState extends ConsumerState<SearchItem> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Lottie.asset(
-                'lottie-animation/no-music-found.json',
+                'lottie-animation/no-music-found-two.json',
                 repeat: true,
-                height: 250,
-                width: 290,
+                height: 230,
+                width: 270,
                 alignment: Alignment.center,
                 fit: BoxFit.cover,
                 // reverse: true,

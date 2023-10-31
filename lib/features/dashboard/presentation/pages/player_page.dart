@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -37,6 +38,21 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
     });
 
     animationController = AnimationController(vsync: this);
+   // lottieControllerStream();
+  }
+
+  void lottieControllerStream() {
+    final notifier = ref.read(audioPlayerProvider.notifier);
+
+    notifier.audioPlayer.playerStateStream.listen((state) {
+      if (state.playing) {
+        animationController
+          ..duration = const Duration(seconds: 3)
+          ..repeat();
+      } else {
+        animationController.stop();
+      }
+    });
   }
 
   @override
@@ -56,38 +72,54 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
     final max = ref.watch(maxProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xfff6f7fb), // Color(0xff907cbe),
+      backgroundColor: findMusicBody, // Color(0xff907cbe),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            HapticFeedback.mediumImpact();
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
+        toolbarHeight: 0.04.sh,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             // First section
             Container(
-                width: double.infinity,
-                height: 0.6.sh,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25),
-                  ),
-                  color: Colors.greenAccent.shade100,
+              width: double.infinity,
+              height: 0.54.sh,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
                 ),
-                child: Lottie.asset(
-                  'lottie-animation/music-animation-3.json',
-                  repeat: true,
-                  fit: BoxFit.cover,
-                  controller: animationController,
-                  onLoaded: (composition) {
-                    animationController
-                      ..duration = composition.duration
-                      ..repeat();
-                  },
-                ),),
+                color: Colors.black,
+              ),
+              child: Lottie.asset(
+                'lottie-animation/music-animation-2.json',
+                repeat: true,
+                fit: BoxFit.cover,
+                controller: animationController,
+                onLoaded: (composition) {
+                  animationController
+                    ..duration = composition.duration
+                    ..repeat();
+                },
+              ),
+            ),
 
             SizedBox(
               width: double.infinity,
-              height: 0.4.sh,
+              height: 0.38.sh,
               child: Column(
                 children: [
                   Container(
@@ -100,7 +132,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       style: AppTextStyle.textStyleOne(
-                        Colors.black,
+                        Colors.white,
                         22,
                         FontWeight.w500,
                       ),
@@ -115,7 +147,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                       '${widget.songModel[state.playIndex].artist}',
                       maxLines: 1,
                       style: AppTextStyle.textStyleOne(
-                        Colors.black,
+                        Colors.white,
                         16,
                         FontWeight.w500,
                       ),
@@ -133,7 +165,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                         Text(
                           position,
                           style: AppTextStyle.textStyleOne(
-                            Colors.black,
+                            Colors.white,
                             16,
                             FontWeight.w500,
                           ),
@@ -153,7 +185,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                         Text(
                           duration,
                           style: AppTextStyle.textStyleOne(
-                            Colors.black,
+                            Colors.white,
                             16,
                             FontWeight.w500,
                           ),
@@ -183,7 +215,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                           },
                           icon: const Icon(
                             Icons.skip_previous,
-                            color: Colors.black,
+                            color: Colors.white,
                             size: 35,
                           ),
                         ),
@@ -208,12 +240,12 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                           icon: notifier.audioPlayer.playing == true
                               ? const Icon(
                                   Icons.pause,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   size: 35,
                                 )
                               : const Icon(
                                   Icons.play_arrow,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   size: 35,
                                 ),
                         ),
@@ -231,7 +263,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                           },
                           icon: const Icon(
                             Icons.skip_next,
-                            color: Colors.black,
+                            color: Colors.white,
                             size: 35,
                           ),
                         ),
