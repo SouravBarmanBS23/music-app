@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:music_app/core/constants/app_color.dart';
+import 'package:music_app/core/constants/text_style.dart';
+import 'package:music_app/features/dashboard/presentation/pages/player_page.dart';
+import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import '../../../../core/constants/app_color.dart';
-import '../../../../core/constants/text_style.dart';
-import '../pages/player_page.dart';
-import '../riverpod/audio_player_provider.dart';
 
 class MusicList extends ConsumerStatefulWidget {
   const MusicList({super.key});
@@ -59,20 +59,18 @@ class _MusicListState extends ConsumerState<MusicList> {
                         snapshot.data![index].displayNameWOExt,
                         maxLines: 1,
                         style: AppTextStyle.textStyleOne(
-                            Colors.white, 20, FontWeight.w300),
+                            Colors.white, 20, FontWeight.w300,),
                       ),
                       subtitle: Text(
                         snapshot.data![index].artist ?? 'Unknown',
                         maxLines: 1,
                         style: AppTextStyle.textStyleOne(
-                            Colors.white, 15, FontWeight.w300),
+                            Colors.white, 15, FontWeight.w300,),
                       ),
                       trailing: state.playIndex == index && state.isPlaying
-                          ? IconButton(
-                              onPressed: () {
-                                HapticFeedback.mediumImpact();
-                              },
-                              icon: const Icon(
+                          ? const IconButton(
+                              onPressed: HapticFeedback.mediumImpact,
+                              icon: Icon(
                                 Icons.arrow_circle_right_outlined,
                                 size: 30,
                                 color: Colors.white,
@@ -80,12 +78,16 @@ class _MusicListState extends ConsumerState<MusicList> {
                             )
                           : null,
                       onTap: () {
-                        //  notifier.playSongs(snapshot.data![index].data, index);
+                        //  notifier.playSongs(snapshot.data![index].data,
+                        //  index);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PlayerPage(
-                                  songModel: snapshot.data!, songIndex: index)),
+                            builder: (context) => PlayerPage(
+                              songModel: snapshot.data!,
+                              songIndex: index,
+                            ),
+                          ),
                         );
                       },
                     ),

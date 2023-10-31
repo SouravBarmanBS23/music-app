@@ -1,11 +1,13 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_provider.dart';
 import 'package:music_app/features/dashboard/presentation/widgets/music_list.dart';
+import 'package:music_app/features/search/presentation/pages/music_search.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -44,12 +46,26 @@ class _HomePageState extends ConsumerState<HomePage> {
                 Text(
                   'Music app',
                   style: AppTextStyle.textStyleOne(
-                      Colors.white, 24, FontWeight.w500,),
+                    Colors.white,
+                    24,
+                    FontWeight.w500,
+                  ),
                 ),
-                const Icon(
-                  Icons.search,
-                  color: Colors.white,
-                  size: 30,
+                InkWell(
+                  onTap: () {
+                    HapticFeedback.mediumImpact();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MusicSearch(),
+                      ),
+                    );
+                  },
+                  child: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
               ],
             ),
@@ -92,8 +108,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             speed: const Duration(milliseconds: 200),
                           ),
                         ],
-                        onTap: () {
-                        },
+                        onTap: () {},
                       ),
                     ),
                   ),
@@ -106,7 +121,10 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Text(
                 'All songs ',
                 style: AppTextStyle.textStyleOne(
-                    Colors.white, 20, FontWeight.w600,),
+                  Colors.white,
+                  20,
+                  FontWeight.w600,
+                ),
               ),
             ),
             const MusicList(),
