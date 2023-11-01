@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
+import 'package:music_app/features/cloud_download/presentation/pages/cloud_download_page.dart';
 import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_provider.dart';
 import 'package:music_app/features/dashboard/presentation/widgets/music_list.dart';
 import 'package:music_app/features/search/presentation/pages/music_search.dart';
@@ -38,10 +39,21 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const Icon(
-                  Icons.queue_music_sharp,
-                  color: Colors.white,
-                  size: 30,
+                IconButton(
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CloudDownloadPage(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
                 Text(
                   'Music app',
