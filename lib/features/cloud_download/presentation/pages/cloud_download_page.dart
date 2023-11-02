@@ -2,21 +2,38 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/firebase_music/presentation/pages/firebase_music_page.dart';
+import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_auth_provider.dart';
 
-class CloudDownloadPage extends StatefulWidget {
+class CloudDownloadPage extends ConsumerStatefulWidget {
   const CloudDownloadPage({super.key});
 
   @override
-  State<CloudDownloadPage> createState() => _CloudDownloadPageState();
+  ConsumerState<CloudDownloadPage> createState() => _CloudDownloadPageState();
 }
 
-class _CloudDownloadPageState extends State<CloudDownloadPage> {
+class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
   @override
   Widget build(BuildContext context) {
+    final authNotifier = ref.read(firebaseAuthProvider.notifier);
+    final authState = ref.watch(firebaseAuthProvider);
+
+    ref.listen<FirebaseAuthState>(firebaseAuthProvider,
+        (previousState, newState) {
+      if (newState.isSigning == true) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const FirebaseMusicPage(),
+          ),
+        );
+      }
+    });
+
     return Scaffold(
       backgroundColor: const Color(0xff071d35),
       appBar: AppBar(
@@ -109,7 +126,10 @@ class _CloudDownloadPageState extends State<CloudDownloadPage> {
                             Text(
                               'Dropbox',
                               style: AppTextStyle.textStyleOne(
-                                  Colors.white, 20, FontWeight.w700),
+                                Colors.white,
+                                20,
+                                FontWeight.w700,
+                              ),
                             ),
                             SizedBox(
                               height: 40,
@@ -139,7 +159,10 @@ class _CloudDownloadPageState extends State<CloudDownloadPage> {
                             Text(
                               'iCloud',
                               style: AppTextStyle.textStyleOne(
-                                  Colors.white, 20, FontWeight.w700),
+                                Colors.white,
+                                20,
+                                FontWeight.w700,
+                              ),
                             ),
                             SizedBox(
                               height: 40,
@@ -214,14 +237,8 @@ class _CloudDownloadPageState extends State<CloudDownloadPage> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               HapticFeedback.mediumImpact();
-                              HapticFeedback.mediumImpact();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const FirebaseMusicPage(),
-                                ),
-                              );
+                              print('goole signing');
+                              authNotifier.handleSignIn();
                             },
                         ), // Color(0xfff9d3a2)
                       ],
