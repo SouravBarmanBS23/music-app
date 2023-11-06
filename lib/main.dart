@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import 'package:music_app/features/dashboard/presentation/pages/home_page.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await JustAudioBackground.init(
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
@@ -16,7 +18,6 @@ void main() async {
     notificationColor: Colors.white,
   );
 
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   final directory = await getApplicationDocumentsDirectory();
