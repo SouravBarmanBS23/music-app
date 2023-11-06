@@ -6,6 +6,6 @@ part './firebase_auth_notifier.dart';
 part './firebase_auth_state.dart';
 
 final firebaseAuthProvider =
-NotifierProvider<FirebaseAuthNotifier, FirebaseAuthState>(
+    NotifierProvider<FirebaseAuthNotifier, FirebaseAuthState>(
   FirebaseAuthNotifier.new,
 );

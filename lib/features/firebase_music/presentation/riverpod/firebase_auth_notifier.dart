@@ -1,10 +1,8 @@
 part of './firebase_auth_provider.dart';
 
 class FirebaseAuthNotifier extends Notifier<FirebaseAuthState> {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-
 
   @override
   FirebaseAuthState build() {
@@ -14,11 +12,11 @@ class FirebaseAuthNotifier extends Notifier<FirebaseAuthState> {
   }
 
   Future<void> handleSignIn() async {
-    try{
+    try {
       final googleUser = await _googleSignIn.signIn();
-      if(googleUser != null){
+      if (googleUser != null) {
         final googleAuth = await googleUser.authentication;
-       final AuthCredential credential =  GoogleAuthProvider.credential(
+        final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
@@ -26,28 +24,24 @@ class FirebaseAuthNotifier extends Notifier<FirebaseAuthState> {
         state = FirebaseAuthState(
           isSigning: true,
         );
-      }else{
+      } else {
         state = FirebaseAuthState(
           isSigning: false,
         );
       }
-    }catch(e){
+    } catch (e) {
       print('Error $e');
     }
   }
 
-  Future<void> checkAlreadySignIn() async{
+  Future<void> checkAlreadySignIn() async {
     final user = _auth.currentUser;
-    if(user != null){
+    if (user != null) {
       state = FirebaseAuthState(
         isSigning: true,
       );
-    }else{
-       await handleSignIn();
+    } else {
+      await handleSignIn();
     }
   }
-
-
-
-
 }

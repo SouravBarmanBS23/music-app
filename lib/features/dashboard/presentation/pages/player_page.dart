@@ -38,7 +38,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
     });
 
     animationController = AnimationController(vsync: this);
-   // lottieControllerStream();
+    // lottieControllerStream();
   }
 
   void lottieControllerStream() {

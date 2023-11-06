@@ -11,7 +11,8 @@ class FirebaseMusicDownloadNotifier
     return FirebaseMusicDownloadState(
       isLoading: false,
       isCompleted: false,
-      index: 0,
+      musicName: '',
+      alreadyExist: false,
     );
   }
 
@@ -23,35 +24,38 @@ class FirebaseMusicDownloadNotifier
     final notifier = ref.read(musicDownloadListProvider.notifier);
 
     final url = await reference.getDownloadURL();
-    print('index number $index');
-    // visible to gallery
-    // final tempDir = await getTemporaryDirectory();
-    // final filePath = '${tempDir.path}/${ref.name}';
-    //  await Dio().download(url, filePath);
+    final isExist = notifier.checkMusicExistOrNot(reference.name);
+    if (!isExist) {
+      await FileDownloader.downloadFile(
+        url: url,
+        name: reference.name,
+        onProgress: (count, total) {
+          if (total == 100) {
+            notifier
+              ..addItem(reference.name)
+              ..cacheMusicName(reference.name);
 
-    await FileDownloader.downloadFile(
-      url: url,
-      name: reference.name,
-      onProgress: (count, total) {
-        print('count $count');
-        print('total $total');
-        if (total == 100) {
-          print('inside total');
-          notifier..addItem(index)
-          ..cacheMusicName(reference.name);
-        } else {
-          print('outside total');
-        }
-      },
-    );
+            state = FirebaseMusicDownloadState(
+              isLoading: false,
+              isCompleted: true,
+              musicName: reference.name,
+              alreadyExist: false,
+            );
+          } else {}
+        },
+        downloadDestination: DownloadDestinations.appFiles,
+        onDownloadCompleted: (path) async {
+          final directoryPath = path.substring(0, path.lastIndexOf('/'));
+          await HiveDB.storeKeyInHive('$directoryPath/');
+        },
+      );
+    } else {
+      state = FirebaseMusicDownloadState(
+        isLoading: false,
+        isCompleted: false,
+        musicName: reference.name,
+        alreadyExist: true,
+      );
+    }
   }
-}
-
-class EachItem {
-  const EachItem({
-    required this.futureFiles,
-    this.isSelected = true,
-  });
-  final bool isSelected;
-  final Future<ListResult> futureFiles;
 }

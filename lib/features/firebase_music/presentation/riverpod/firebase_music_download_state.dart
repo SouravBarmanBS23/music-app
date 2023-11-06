@@ -4,23 +4,26 @@ class FirebaseMusicDownloadState {
   FirebaseMusicDownloadState({
     required this.isLoading,
     required this.isCompleted,
-    required this.index,
+    required this.musicName,
+    required this.alreadyExist,
   });
 
   final bool isLoading;
   final bool isCompleted;
-  final int index;
+  final String musicName;
+  final bool alreadyExist;
 
   FirebaseMusicDownloadState copyWith({
-
     bool? isLoading,
     bool? isCompleted,
-    int? index,
+    String? musicName,
+    bool? alreadyExist,
   }) {
     return FirebaseMusicDownloadState(
       isLoading: isLoading ?? this.isLoading,
       isCompleted: isCompleted ?? this.isCompleted,
-      index: index ?? this.index,
+      musicName: musicName ?? this.musicName,
+      alreadyExist: alreadyExist ?? this.alreadyExist,
     );
   }
 }
