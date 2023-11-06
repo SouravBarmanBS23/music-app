@@ -8,7 +8,6 @@ class FirebaseAuthState {
   final bool isSigning;
 
   FirebaseAuthState copyWith({
-
     bool? isSigning,
   }) {
     return FirebaseAuthState(

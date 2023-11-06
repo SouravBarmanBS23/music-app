@@ -59,13 +59,19 @@ class _MusicListState extends ConsumerState<MusicList> {
                         snapshot.data![index].displayNameWOExt,
                         maxLines: 1,
                         style: AppTextStyle.textStyleOne(
-                            Colors.white, 20, FontWeight.w300,),
+                          Colors.white,
+                          20,
+                          FontWeight.w300,
+                        ),
                       ),
                       subtitle: Text(
                         snapshot.data![index].artist ?? 'Unknown',
                         maxLines: 1,
                         style: AppTextStyle.textStyleOne(
-                            Colors.white, 15, FontWeight.w300,),
+                          Colors.white,
+                          15,
+                          FontWeight.w300,
+                        ),
                       ),
                       trailing: state.playIndex == index && state.isPlaying
                           ? const IconButton(

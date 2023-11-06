@@ -86,8 +86,9 @@ class _MusicListState extends ConsumerState<SearchItem> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => PlayerPage(
-                          songModel: musicSearchNotifier.filteredSongs,
-                          songIndex: index,),
+                        songModel: musicSearchNotifier.filteredSongs,
+                        songIndex: index,
+                      ),
                     ),
                   );
                 },

@@ -50,6 +50,8 @@ dependencies:
   lottie: ^2.7.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  media_scanner: ^2.1.0
+  on_audio_room: ^2.2.1+1
   flutter_file_downloader: ^1.1.4
   input_form_field:
     git:

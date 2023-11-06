@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:music_app/core/constants/hive_db.dart';
 import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/firebase_music/presentation/pages/firebase_music_page.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_auth_provider.dart';
+import 'package:music_app/features/firebase_music/presentation/riverpod/music_dowload_provider.dart';
 
 class CloudDownloadPage extends ConsumerStatefulWidget {
   const CloudDownloadPage({super.key});
@@ -17,6 +19,19 @@ class CloudDownloadPage extends ConsumerStatefulWidget {
 }
 
 class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
+  @override
+  void initState() {
+    super.initState();
+    Future(() {
+      HiveDB.isEmpty().then((value) {
+        if (value == false) {
+          ref.read(musicDownloadListProvider.notifier).initialStoreOnHive();
+        }
+        print('Hive box is empty: $value');
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final authNotifier = ref.read(firebaseAuthProvider.notifier);
