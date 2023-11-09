@@ -27,7 +27,9 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
     final downloadNotifier = ref.watch(musicDownloadListProvider.notifier);
 
     ref.listen(firebaseMusicDownloadProvider, (previous, next) {
-      if (next.isCompleted) {
+      if ((next.isCompleted == true) &&
+          (next.alreadyExist == false) &&
+          (next.isLoading == false)) {
         ShowSnackBar.showSnackBar(
           context,
           'Download Completed',
@@ -41,6 +43,13 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
           next.musicName,
         );
       }
+      // else {
+      //   ShowSnackBar.showSnackBar(
+      //     context,
+      //     'Downloading',
+      //     '${next.musicName} - ${double.parse(next.musicName).toStringAsFixed(2)}% completed',
+      //   );
+      // }
     });
 
     return Scaffold(

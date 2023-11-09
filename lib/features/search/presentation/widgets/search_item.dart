@@ -82,15 +82,15 @@ class _MusicListState extends ConsumerState<SearchItem> {
                       )
                     : null,
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PlayerPage(
-                        songModel: musicSearchNotifier.filteredSongs,
-                        songIndex: index,
-                      ),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => PlayerPage(
+                  //       songModel: musicSearchNotifier.filteredSongs,
+                  //       songIndex: index,
+                  //     ),
+                  //   ),
+                  // );
                 },
               ),
             );

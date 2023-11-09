@@ -21,6 +21,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
+    // ref.read(audioPlayerProvider.notifier).querySongs();
     _initializeApp();
   }
 
