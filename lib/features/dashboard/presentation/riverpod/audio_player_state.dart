@@ -1,5 +1,7 @@
-class AudioPlayerState {
-  AudioPlayerState({
+part of './audio_player_provider.dart';
+
+class AudioPlayerStateTest {
+  AudioPlayerStateTest({
     required this.playIndex,
     required this.isPlaying,
   });
@@ -7,11 +9,11 @@ class AudioPlayerState {
   final int playIndex;
   final bool isPlaying;
 
-  AudioPlayerState copyWith({
+  AudioPlayerStateTest copyWith({
     int? playIndex,
     bool? isPlaying,
   }) {
-    return AudioPlayerState(
+    return AudioPlayerStateTest(
       playIndex: playIndex ?? this.playIndex,
       isPlaying: isPlaying ?? this.isPlaying,
     );

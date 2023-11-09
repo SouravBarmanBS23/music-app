@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
+import 'package:core/src/music/music_model.dart';
 import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_provider.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 class PlayerPage extends ConsumerStatefulWidget {
   const PlayerPage({
@@ -15,7 +15,7 @@ class PlayerPage extends ConsumerStatefulWidget {
     super.key,
   });
 
-  final List<SongModel> songModel;
+  final List<MusicModel> songModel;
   final int songIndex;
 
   @override
@@ -128,7 +128,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     width: double.infinity,
                     child: Text(
-                      widget.songModel[state.playIndex].displayNameWOExt,
+                      widget.songModel[state.playIndex].displayName,
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       style: AppTextStyle.textStyleOne(
@@ -144,7 +144,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                     margin: EdgeInsets.only(top: 5.h),
                     width: double.infinity,
                     child: Text(
-                      '${widget.songModel[state.playIndex].artist}',
+                      'No Artist',
                       maxLines: 1,
                       style: AppTextStyle.textStyleOne(
                         Colors.white,
@@ -254,12 +254,17 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                         IconButton(
                           onPressed: () {
                             HapticFeedback.mediumImpact();
-                            notifier.playForward(
-                              widget.songModel[state.playIndex + 1].uri,
-                              state.playIndex,
-                              widget.songModel.length,
-                              widget.songModel[state.playIndex + 1],
-                            );
+
+                            if (widget.songModel.length <=
+                                state.playIndex + 1) {
+                            } else {
+                              notifier.playForward(
+                                widget.songModel[state.playIndex + 1].uri,
+                                state.playIndex,
+                                widget.songModel.length,
+                                widget.songModel[state.playIndex + 1],
+                              );
+                            }
                           },
                           icon: const Icon(
                             Icons.skip_next,
