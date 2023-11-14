@@ -7,9 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/core/constants/hive_db.dart';
 import 'package:music_app/core/constants/text_style.dart';
+import 'package:music_app/features/drop_box/presentation/pages/drop_box_test.dart';
+import 'package:music_app/features/drop_box/presentation/pages/dropbox_music_page.dart';
+import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_auth_notifier.dart';
 import 'package:music_app/features/firebase_music/presentation/pages/firebase_music_page.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_auth_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/music_dowload_provider.dart';
+
+import '../../../drop_box/presentation/riverpod/dropbox_auth_provider.dart';
 
 class CloudDownloadPage extends ConsumerStatefulWidget {
   const CloudDownloadPage({super.key});
@@ -37,7 +42,11 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
     final authNotifier = ref.read(firebaseAuthProvider.notifier);
     final authState = ref.watch(firebaseAuthProvider);
 
-    ref.listen<FirebaseAuthState>(firebaseAuthProvider,
+    final dropBoxAuthState = ref.watch(dropBoxAuthProvider);
+    final dropBoxAuthNotifier = ref.read(dropBoxAuthProvider.notifier);
+
+
+    ref..listen<FirebaseAuthState>(firebaseAuthProvider,
         (previousState, newState) {
       if (newState.isSigning == true) {
         Navigator.push(
@@ -47,7 +56,20 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
           ),
         );
       }
-    });
+    })
+
+
+    ..listen<AuthState>(dropBoxAuthProvider,
+            (previousState, newState) {
+          if (newState == AuthState.authenticated) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const DropBoxMusicPage(),
+              ),
+            );
+          }else{}
+        });
 
     return Scaffold(
       backgroundColor: const Color(0xff071d35),
@@ -125,7 +147,13 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                 Column(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+
+                        dropBoxAuthNotifier..initDropbox()
+                        ..checkAuthorized(true);
+
+                      },
                       child: Container(
                         margin: EdgeInsets.only(top: 0.05.sh),
                         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -159,7 +187,8 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                      },
                       child: Container(
                         margin: EdgeInsets.only(top: 0.02.sh),
                         height: 60,

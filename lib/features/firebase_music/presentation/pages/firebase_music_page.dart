@@ -43,13 +43,7 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
           next.musicName,
         );
       }
-      // else {
-      //   ShowSnackBar.showSnackBar(
-      //     context,
-      //     'Downloading',
-      //     '${next.musicName} - ${double.parse(next.musicName).toStringAsFixed(2)}% completed',
-      //   );
-      // }
+
     });
 
     return Scaffold(

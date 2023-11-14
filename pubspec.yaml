@@ -62,6 +62,8 @@ dependencies:
     path: modules/core
   mime: ^1.0.4
   path: ^1.8.3
+  shared_preferences: ^2.2.2
+  dropbox_client: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -95,6 +97,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/
+    - images/drop-box/
     - images/wallpapers/
     - images/cloud/
     - lottie-animation/
