@@ -32,10 +32,10 @@ class UserInfoProvider extends Notifier<UserState> {
       );
       userModel.add(getDataModel);
       state = UserState.success;
-      print(accountInfo.name!.displayName);
-      print(accountInfo.email);
-      print(accountInfo.rootInfo!.homeNamespaceId);
-      print(accountInfo.country);
+      // print(accountInfo.name!.displayName);
+      // print(accountInfo.email);
+      // print(accountInfo.rootInfo!.homeNamespaceId);
+      // print(accountInfo.country);
     } else {
       print('error');
       state = UserState.error;
