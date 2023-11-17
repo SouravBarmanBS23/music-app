@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
+import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_auth_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_music_download_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/music_dowload_provider.dart';
 
@@ -25,8 +26,9 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
     // final state = ref.read(firebaseMusicDownloadProvider);
     // final downloadState = ref.watch(musicDownloadListProvider);
     final downloadNotifier = ref.watch(musicDownloadListProvider.notifier);
+    final firebaseAuthNotifier = ref.read(firebaseAuthProvider.notifier);
 
-    ref.listen(firebaseMusicDownloadProvider, (previous, next) {
+    ref..listen(firebaseMusicDownloadProvider, (previous, next) {
       if ((next.isCompleted == true) &&
           (next.alreadyExist == false) &&
           (next.isLoading == false)) {
@@ -43,11 +45,31 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
           next.musicName,
         );
       }
-
+      // else {
+      //   ShowSnackBar.showSnackBar(
+      //     context,
+      //     'Downloading',
+      //     '${next.musicName} - ${double.parse(next.musicName).toStringAsFixed(2)}% completed',
+      //   );
+      // }
+    })
+    ..listen(firebaseAuthProvider, (previous, next) {
+      if(next.isSignout == true){
+        Navigator.pop(context);
+      }
     });
 
     return Scaffold(
       backgroundColor: const Color(0xff350c44),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: FloatingActionButton.small(
+        onPressed: ()  {
+          HapticFeedback.mediumImpact();
+          firebaseAuthNotifier.handleSignOut();
+        },
+        child: const Icon(Icons.logout_outlined),
+
+      ),
       appBar: AppBar(
         toolbarHeight: 0.04.sh,
         //   backgroundColor: Colors.transparent,
@@ -156,30 +178,30 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
                                 file.name,
                               )
                                   ? IconButton(
-                                      onPressed: () {
-                                        HapticFeedback.mediumImpact();
-                                        ShowSnackBar.alreadyDownloadedSnackBar(
-                                          context,
-                                          'This song is already downloaded',
-                                        );
-                                      },
-                                      icon: const Icon(
-                                        Icons.cloud_done_outlined,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                    )
+                                onPressed: () {
+                                  HapticFeedback.mediumImpact();
+                                  ShowSnackBar.alreadyDownloadedSnackBar(
+                                    context,
+                                    'This song is already downloaded',
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.cloud_done_outlined,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                              )
                                   : IconButton(
-                                      onPressed: () {
-                                        HapticFeedback.mediumImpact();
-                                        notifier.downloadFile(file, index);
-                                      },
-                                      icon: const Icon(
-                                        Icons.download,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                    ),
+                                onPressed: () {
+                                  HapticFeedback.mediumImpact();
+                                  notifier.downloadFile(file, index);
+                                },
+                                icon: const Icon(
+                                  Icons.download,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                              ),
                             ),
                           );
                         },

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dropbox_client/dropbox_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
+import 'package:music_app/features/drop_box/presentation/riverpod/download_progress_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_auth_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,6 +36,7 @@ class DropboxMusicDownloadNotifier extends Notifier<DownloadState> {
 
   Future downloadTest(String musicName,int index) async {
     final dropBoxFetchNotifier = ref.read(dropboxMusicFetchProvider.notifier);
+    final progress = ref.read(downloadProgressProvider.notifier);
     if (await dropBoxFetchNotifier.checkAuthorized(true)) {
       final tempDir = await getExternalStorageDirectory();
       final directory = Directory('${tempDir?.path}/dropbox/download');
@@ -44,12 +46,17 @@ class DropboxMusicDownloadNotifier extends Notifier<DownloadState> {
       }
       final filepath = '${tempDir?.path}/dropbox/download/$musicName';
       print(filepath);
-
+       state = DownloadState.loading;
       final result = await Dropbox.download('/$musicName', filepath,
           (downloaded, total) {
-        print('progress $downloaded / $total');
+         //   progress.state = (downloaded / total) * 100;
+         progress.updateProgress((downloaded / total) * 100);
+     //  progress.state = result;
+        print('progress ${(downloaded / total) * 100}');
         cacheMusicName(musicName);
       });
+      // await ref.read(getAudioProvider.notifier).querySongs();
+      state = DownloadState.success;
       dropBoxFetchNotifier.updateDownloadStatus(index);
 
       print(result);
@@ -80,3 +87,5 @@ class DropboxMusicDownloadNotifier extends Notifier<DownloadState> {
 
 
 }
+
+

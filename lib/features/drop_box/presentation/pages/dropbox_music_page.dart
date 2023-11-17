@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,11 +7,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
+import 'package:music_app/features/dashboard/presentation/riverpod/get_audio_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/background_image_provider.dart';
+import 'package:music_app/features/drop_box/presentation/riverpod/download_progress_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_download_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_notifier.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/user_info_provider.dart';
+
+
+part '../widgets/pull_to_refresh.dart';
+part '../widgets/dropbox_music_list.dart';
 
 class DropBoxMusicPage extends ConsumerStatefulWidget {
   const DropBoxMusicPage({super.key});
@@ -33,25 +41,47 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
   Widget build(BuildContext context) {
     final dropBoxAuthState = ref.watch(dropboxMusicFetchProvider);
     final dropBoxFetchNotifier = ref.read(dropboxMusicFetchProvider.notifier);
-
+    final audioQueryNotifier = ref.read(getAudioProvider.notifier);
     final imageState = ref.watch(backgroundProvider);
     final imageNotifier = ref.read(backgroundProvider.notifier);
     final userInfoState = ref.watch(userInfoProvider);
     final userInfoNotifier = ref.read(userInfoProvider.notifier);
     final dropBoxMusicDownloadNotifier =
         ref.read(dropBoxMusicDownloadProvider.notifier);
+    final progress = ref.watch(downloadProgressProvider.notifier);
 
-    ref.listen(dropboxMusicFetchProvider, (previous, next) async {
-      if (next == DropboxAuthState.loading) {
-      } else {
-        await userInfoNotifier.getAccountInfo();
-      //   await dropBoxFetchNotifier.listFolder('');
-
-      }
-    });
+    ref
+      ..listen(dropboxMusicFetchProvider, (previous, next) async {
+        if (next == DropboxAuthState.loading) {
+        } else {
+          await userInfoNotifier.getAccountInfo();
+          //   await dropBoxFetchNotifier.listFolder('');
+        }
+      })
+      ..listen(dropBoxMusicDownloadProvider, (previous, next) {
+        if (next == DownloadState.loading) {
+          ShowSnackBar.showSnackBar(
+            context,
+            'from DropBox...',
+            'Start Downloading',
+          );
+        } if(next == DownloadState.success){
+          audioQueryNotifier.querySongFromDropbox();
+        }
+      });
 
     return Scaffold(
       backgroundColor: const Color(0xff350c44),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: FloatingActionButton.small(
+        onPressed: ()  {
+          print('logout');
+             dropBoxFetchNotifier.dropboxLogout();
+             Navigator.pop(context);
+        },
+        child: const Icon(Icons.logout_outlined),
+
+      ),
       body: Stack(
         children: [
           Container(
@@ -248,70 +278,8 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
                     height: 0.4.sh,
                     width: double.infinity,
                     //  color: Colors.white,
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: dropBoxFetchNotifier.musicList.length,
-                      itemBuilder: (_, index) {
-                        final musicName = dropBoxFetchNotifier.musicList[index];
-                        return Container(
-                          margin: const EdgeInsets.only(
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white10, //const Color(0xff1c1f29),
-                          ),
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            tileColor: bgColor,
-                            leading: const Icon(
-                              Icons.music_note,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                            title: Text(
-                              musicName.name,
-                              maxLines: 1,
-                              style: AppTextStyle.textStyleOne(
-                                Colors.white,
-                                20,
-                                FontWeight.w400,
-                              ),
-                            ),
-                            trailing: dropBoxMusicDownloadNotifier.downloadItems
-                                        .contains(musicName.name) ||
-                                    musicName.isDownloaded
-                                ? IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.download_for_offline_outlined,
-                                      color: Colors.white,
-                                      size: 25,
-                                    ),
-                                  )
-                                : IconButton(
-                                    onPressed: () {
-                                      // dropBoxFetchNotifier.updateDownloadStatus(index);
-                                      HapticFeedback.mediumImpact();
-                                      ref
-                                          .read(dropBoxMusicDownloadProvider
-                                              .notifier,)
-                                          .downloadTest(musicName.name, index);
-                                    },
-                                    icon: const Icon(
-                                      Icons.download,
-                                      color: Colors.white,
-                                      size: 25,
-                                    ),
-                                  ),
-                          ),
-                        );
-                      },
-                    ),
+                    child: dropBoxFetchNotifier.musicList.isEmpty ?
+                    const PullToRefresh() : DropboxMusicList(),
                   ),
                 ],
               ),
@@ -321,13 +289,4 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
     );
   }
 
-  // void _updateDownloadStatus(int index) {
-  //   final dropBoxFetchNotifier = ref.read(dropboxMusicFetchProvider.notifier);
-  //
-  //   dropBoxFetchNotifier.musicList[index] =
-  //       dropBoxFetchNotifier.musicList[index].copyWith(
-  //     isDownloaded: !dropBoxFetchNotifier.musicList[index].isDownloaded,
-  //   );
-  //   setState(() {});
-  // }
 }

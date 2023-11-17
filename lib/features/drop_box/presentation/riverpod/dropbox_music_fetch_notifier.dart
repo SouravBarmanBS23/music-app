@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:core/core.dart';
 import 'package:dropbox_client/dropbox_client.dart';
@@ -7,7 +8,7 @@ import 'package:music_app/features/drop_box/data/model/dropbox_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'dropbox_music_fetch_provider.dart';
+import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
 
 
 enum DropboxAuthState { initial, authenticated, unauthenticated, loading, error }
@@ -115,6 +116,20 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
 
     await Dropbox.unlink();
   }
+
+  Future dropboxLogout()async{
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('dropboxAccessToken');
+    await prefs.remove('dropboxCredentials');
+    accessToken = null;
+    credentials = null;
+    await Dropbox.unlink();
+
+  }
+
+
+
 
   Future authorizeWithAccessToken() async {
     await Dropbox.authorizeWithAccessToken(accessToken!);

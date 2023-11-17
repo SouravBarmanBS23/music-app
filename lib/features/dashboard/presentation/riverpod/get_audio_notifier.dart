@@ -65,4 +65,45 @@ class GetAudioNotifier extends Notifier<GetAudioState> {
       data: MusicModel.musicModelList,
     );
   }
+
+  Future<void> querySongFromDropbox() async {
+    state = GetAudioState(
+      status: MusicStatus.loading,
+    );
+
+    final directory = await getExternalStorageDirectory();
+
+    final files = await getFilesFromAppSpecificFolder(
+      '${directory?.path}/dropbox/download',);
+
+    print('Total files found: ${files.length}');
+    for (var file = 0; file < files.length; file++) {
+      if (files[file].path.endsWith('.mp3') ||
+          files[file].path.endsWith('.wav') ||
+          files[file].path.endsWith('.ogg') ||
+          files[file].path.endsWith('.flac') ||
+          files[file].path.endsWith('.m4a')) {
+        final displayName = files[file].path.split('/').last;
+        final alreadyExists = MusicModel.musicModelList
+            .any((music) => music.displayName == displayName);
+
+        if (!alreadyExists) {
+          final music = MusicModel(
+            id: file,
+            uri: files[file].uri.toString(),
+            displayName: displayName,
+            displayNameWOExt: null,
+          );
+          MusicModel.musicModelList.add(music);
+        }
+      }
+    }
+    state = GetAudioState(
+      status: MusicStatus.success,
+      data: MusicModel.musicModelList,
+    );
+  }
+
+
+
 }

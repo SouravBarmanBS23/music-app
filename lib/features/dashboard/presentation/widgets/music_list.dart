@@ -23,6 +23,7 @@ class _MusicListState extends ConsumerState<MusicList> {
     super.initState();
     Future(() {
       ref.read(getAudioProvider.notifier).querySongs();
+      ref.read(getAudioProvider.notifier).querySongFromDropbox();
     });
   }
 
