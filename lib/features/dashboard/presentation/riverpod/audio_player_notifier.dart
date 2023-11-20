@@ -5,6 +5,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
   final audioPlayer = AudioPlayer();
   final storagePermission = Permission.storage;
   late final AnimationController animationController;
+  //static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   @override
   AudioPlayerStateTest build() {
@@ -80,12 +81,13 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
   }
 
   Future<void> requestPermission() async {
-    const permission = Permission.storage;
+    final deviceInfo = await DeviceInfoPlugin().androidInfo;
+    final permission =
+        deviceInfo.version.sdkInt > 32 ? Permission.audio : Permission.storage;
     final permissionNotifier = ref.read(permissionGranted.notifier);
 
     if (await permission.status.isDenied) {
       final result = await permission.request();
-
       if (result.isGranted) {
         permissionNotifier.state = 1;
       } else if (result.isDenied) {
