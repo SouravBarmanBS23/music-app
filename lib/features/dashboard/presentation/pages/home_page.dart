@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +28,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Future<void> _initializeApp() async {
-    await ref.read(audioPlayerProvider.notifier).requestPermission();
+    Platform.isIOS
+        ? await ref
+            .read(audioPlayerProvider.notifier)
+            .requestAudioAndStoragePermissions()
+        : await ref.read(audioPlayerProvider.notifier).requestPermission();
   }
 
   @override
@@ -129,7 +135,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
             Container(
-             // color: Colors.white12,
+              // color: Colors.white12,
               margin: const EdgeInsets.only(left: 25, top: 10, bottom: 5),
               padding: const EdgeInsets.only(top: 5, bottom: 5),
               alignment: Alignment.centerLeft,

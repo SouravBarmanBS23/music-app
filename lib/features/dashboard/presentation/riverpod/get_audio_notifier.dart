@@ -32,7 +32,9 @@ class GetAudioNotifier extends Notifier<GetAudioState> {
       status: MusicStatus.loading,
     );
 
-    final directory = await getExternalStorageDirectory();
+    final directory = Platform.isIOS
+        ? await getApplicationDocumentsDirectory()
+        : await getExternalStorageDirectory();
 
     final files = await getFilesFromAppSpecificFolder(
       '${directory?.path}/${AudioDirectories.music}',
@@ -71,10 +73,13 @@ class GetAudioNotifier extends Notifier<GetAudioState> {
       status: MusicStatus.loading,
     );
 
-    final directory = await getExternalStorageDirectory();
+    final directory = Platform.isIOS
+        ? await getApplicationDocumentsDirectory()
+        : await getExternalStorageDirectory();
 
     final files = await getFilesFromAppSpecificFolder(
-      '${directory?.path}/dropbox/download',);
+      '${directory?.path}/dropbox/download',
+    );
 
     print('Total files found: ${files.length}');
     for (var file = 0; file < files.length; file++) {
@@ -103,7 +108,4 @@ class GetAudioNotifier extends Notifier<GetAudioState> {
       data: MusicModel.musicModelList,
     );
   }
-
-
-
 }

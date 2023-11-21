@@ -101,6 +101,52 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
     }
   }
 
+  Future<void> requestAudioAndStoragePermissions() async {
+    final permissionNotifier = ref.read(permissionGranted.notifier);
+
+    final audioPermissionStatus = await Permission.audio.status;
+    final mediaLibraryWritePermissionStatus =
+        await Permission.mediaLibrary.status;
+
+    var shouldOpenSettings = false;
+
+    if (audioPermissionStatus.isDenied || audioPermissionStatus.isRestricted) {
+      final audioPermissionRequestResult = await Permission.audio.request();
+      if (audioPermissionRequestResult.isGranted) {
+      } else if (audioPermissionRequestResult.isPermanentlyDenied) {
+        shouldOpenSettings = true;
+      }
+    }
+
+    if (mediaLibraryWritePermissionStatus.isDenied ||
+        mediaLibraryWritePermissionStatus.isRestricted) {
+      final mediaLibraryWritePermissionRequestResult =
+          await Permission.mediaLibrary.request();
+      if (mediaLibraryWritePermissionRequestResult.isGranted) {
+      } else if (mediaLibraryWritePermissionRequestResult.isPermanentlyDenied) {
+
+        shouldOpenSettings = true;
+      }
+    }
+
+
+    if (shouldOpenSettings) {
+      await openAppSettings();
+    }
+
+    if (audioPermissionStatus.isGranted &&
+        mediaLibraryWritePermissionStatus.isGranted) {
+      // Permissions granted, proceed with audio and storage operations
+      permissionNotifier.state = 1;
+
+    } else {
+      // Permissions not granted, handle accordingly
+      permissionNotifier.state = 0;
+      await openAppSettings();
+
+    }
+  }
+
   void playPrevious(String? uri, int index, MusicModel songModel) {
     if (index == 0) {
       audioPlayer

@@ -38,7 +38,9 @@ class DropboxMusicDownloadNotifier extends Notifier<DownloadState> {
     final dropBoxFetchNotifier = ref.read(dropboxMusicFetchProvider.notifier);
     final progress = ref.read(downloadProgressProvider.notifier);
     if (await dropBoxFetchNotifier.checkAuthorized(true)) {
-      final tempDir = await getExternalStorageDirectory();
+      final tempDir = Platform.isIOS
+          ? await getApplicationDocumentsDirectory()
+          : await getExternalStorageDirectory();
       final directory = Directory('${tempDir?.path}/dropbox/download');
 
       if (!await directory.exists()) {

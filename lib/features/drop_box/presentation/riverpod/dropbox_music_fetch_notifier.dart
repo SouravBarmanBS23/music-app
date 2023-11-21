@@ -173,7 +173,9 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
 
   Future uploadTest() async {
     if (await checkAuthorized(true)) {
-      final tempDir = await getExternalStorageDirectory();
+      final tempDir = Platform.isIOS
+          ? await getApplicationDocumentsDirectory()
+          : await getExternalStorageDirectory();
       final filepath = '${tempDir?.path}/dropbox/test_upload.txt';
       File(filepath).writeAsStringSync(
         'contents.. from ${Platform.isIOS ? 'iOS' : 'Android'}\n',);
@@ -188,7 +190,9 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
 
   Future downloadTest() async {
     if (await checkAuthorized(true)) {
-      final tempDir = await getExternalStorageDirectory();
+      final tempDir = Platform.isIOS
+          ? await getApplicationDocumentsDirectory()
+          : await getExternalStorageDirectory();
       final filepath = '${tempDir?.path}/dropbox/download/test_download.txt';
       print(filepath);
 
