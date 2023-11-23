@@ -1,5 +1,6 @@
 <p align="center">
-<a href="https://github.com/SouravBarmanBS23/music-app/actions"><img src="https://github.com/SouravBarmanBS23/music-app/actions/workflows/continuous_integration.yml/badge.svg?style=flat&logo=github" alt="CI Status"></a>
+<!-- <a href="https://github.com/SouravBarmanBS23/music-app/actions"><img src="https://github.com/SouravBarmanBS23/music-app/actions/workflows/continuous_integration.yml/badge.svg?style=flat&logo=github" alt="CI Status"></a>
+   -->
 <a href="https://github.com/SouravBarmanBS23/music-app"><img src="https://img.shields.io/github/stars/SouravBarmanBS23/music-app.svg?style=flat&logo=github" alt="Star on Github"></a>
 <a href="https://github.com/SouravBarmanBS23/music-app/releases"><img src="https://img.shields.io/github/v/release/SouravBarmanBS23/music-app?style=flat&color=b02053&include_prereleases" alt="GitHub release (latest by date including pre-releases)"></a>
 <a href="http://www.apache.org/licenses/"><img src="https://img.shields.io/github/license/SouravBarmanBS23/listify?style=flat&color=832878" alt="License: Apache"></a>
@@ -46,6 +47,17 @@ Flutter 3.13.3 • channel stable • https://github.com/flutter/flutter.git
 Framework • revision 2524052335 (3 months ago) • 2023-09-06 14:32:31 -0700
 Engine • revision b8d35810e9
 Tools • Dart 3.1.1 • DevTools 2.25.0
+```
+## Project Structure
+In this project, I followed clean architecture. For state management, I used flutter_riverpod: 2.3.6. Additionally, I integrated cloud services such as Dropbox and Firebase. To download music from the cloud, you first need to authenticate your account
+```
+└── lib/
+    └── features/
+        ├── cloud_download
+        ├── dashboard
+        ├── drop_box
+        ├── firebase_music
+        └── search
 ```
 
 
