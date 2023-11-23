@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/dashboard/presentation/riverpod/get_audio_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/background_image_provider.dart';
-import 'package:music_app/features/drop_box/presentation/riverpod/download_progress_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_download_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_notifier.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
@@ -46,9 +44,6 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
     final imageNotifier = ref.read(backgroundProvider.notifier);
     final userInfoState = ref.watch(userInfoProvider);
     final userInfoNotifier = ref.read(userInfoProvider.notifier);
-    final dropBoxMusicDownloadNotifier =
-        ref.read(dropBoxMusicDownloadProvider.notifier);
-    final progress = ref.watch(downloadProgressProvider.notifier);
 
     ref
       ..listen(dropboxMusicFetchProvider, (previous, next) async {
@@ -75,7 +70,6 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton.small(
         onPressed: ()  {
-          print('logout');
              dropBoxFetchNotifier.dropboxLogout();
              Navigator.pop(context);
         },
@@ -197,11 +191,9 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
                       ],
                     ),
                   ),
-                  Container(
-                    // margin: EdgeInsets.only(top: 0.014.sh),
+                  SizedBox(
                     height: 0.35.sh,
                     width: double.infinity,
-                    // color: Colors.greenAccent,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.all(10),
@@ -279,7 +271,7 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
                     width: double.infinity,
                     //  color: Colors.white,
                     child: dropBoxFetchNotifier.musicList.isEmpty ?
-                    const PullToRefresh() : DropboxMusicList(),
+                    const PullToRefresh() : const DropboxMusicList(),
                   ),
                 ],
               ),

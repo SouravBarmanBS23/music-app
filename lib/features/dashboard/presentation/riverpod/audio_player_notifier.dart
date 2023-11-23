@@ -53,7 +53,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
     audioPlayer.seek(duration);
   }
 
-  void playSongs(String? uri, int index, MusicModel songModel) {
+  void playSongs(String? uri, int index, dynamic songModel) {
     try {
       if (uri != null) {
         final uriData = Uri.parse(uri);
@@ -147,7 +147,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
     }
   }
 
-  void playPrevious(String? uri, int index, MusicModel songModel) {
+  void playPrevious(String? uri, int index, dynamic songModel) {
     if (index == 0) {
       audioPlayer
         ..setAudioSource(

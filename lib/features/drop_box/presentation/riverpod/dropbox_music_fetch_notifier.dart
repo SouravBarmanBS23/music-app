@@ -1,14 +1,12 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:core/core.dart';
 import 'package:dropbox_client/dropbox_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_app/features/drop_box/data/model/dropbox_file.dart';
+import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
 
 
 enum DropboxAuthState { initial, authenticated, unauthenticated, loading, error }
