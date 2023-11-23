@@ -75,6 +75,6 @@ In this project, I followed clean architecture. For state management, I used flu
 To learn more about riverpod:<br>
 https://codewithandrea.com/videos/flutter-state-management-riverpod/<br>
 To learn more about MVC pattern:<br>
-https://medium.flutterdevs.com/design-patterns-in-flutter-part-1-c32a3ddb00e2<br>
+[https://medium.flutterdevs.com/design-patterns-in-flutter-part-1-c32a3ddb00e2](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0)https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0<br>
 To Install flutter:<br>
 https://flutter.dev/docs/get-started/install
