@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/core/constants/hive_db.dart';
 import 'package:music_app/core/constants/text_style.dart';
+import 'package:music_app/features/drop_box/presentation/pages/dropbox_music_page.dart';
+import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/pages/firebase_music_page.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_auth_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/music_dowload_provider.dart';
@@ -27,7 +29,6 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
         if (value == false) {
           ref.read(musicDownloadListProvider.notifier).initialStoreOnHive();
         }
-        print('Hive box is empty: $value');
       });
     });
   }
@@ -35,19 +36,34 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
   @override
   Widget build(BuildContext context) {
     final authNotifier = ref.read(firebaseAuthProvider.notifier);
-    final authState = ref.watch(firebaseAuthProvider);
+    // final authState = ref.watch(firebaseAuthProvider);
+    //
+    // final dropBoxAuthState = ref.watch(dropBoxAuthProvider);
+    final dropBoxAuthNotifier = ref.read(dropboxMusicFetchProvider.notifier);
 
-    ref.listen<FirebaseAuthState>(firebaseAuthProvider,
-        (previousState, newState) {
-      if (newState.isSigning == true) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const FirebaseMusicPage(),
-          ),
-        );
-      }
-    });
+    ref
+      .listen<FirebaseAuthState>(firebaseAuthProvider,
+          (previousState, newState) {
+        if (newState.isSigning == true) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const FirebaseMusicPage(),
+            ),
+          );
+        }
+      });
+      // ..listen<DropboxAuthState>(dropboxMusicFetchProvider,
+      //     (previousState, newState) {
+      //   if (newState == DropboxAuthState.authenticated) {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => const DropBoxMusicPage(),
+      //       ),
+      //     );
+      //   } else {}
+      // });
 
     return Scaffold(
       backgroundColor: const Color(0xff071d35),
@@ -125,14 +141,24 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                 Column(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+                        // dropBoxAuthNotifier..initDropbox()
+                        // ..checkAuthorized(true);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DropBoxMusicPage(),
+                          ),
+                        );
+                      },
                       child: Container(
                         margin: EdgeInsets.only(top: 0.05.sh),
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         height: 60,
                         width: 0.6.sw,
                         decoration: BoxDecoration(
-                          color: const Color(0xffa37c75),
+                          color: Colors.white38, // const Color(0xffa37c75),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
@@ -165,7 +191,7 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                         height: 60,
                         width: 0.6.sw,
                         decoration: BoxDecoration(
-                          color: const Color(0xffa37c75),
+                          color: Colors.white38,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
@@ -198,7 +224,7 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                         height: 60,
                         width: 0.6.sw,
                         decoration: BoxDecoration(
-                          color: const Color(0xffa37c75),
+                          color: Colors.white38,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(

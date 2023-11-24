@@ -1,3 +1,4 @@
+import 'package:core/src/music/music_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
-import 'package:core/src/music/music_model.dart';
 import 'package:music_app/features/dashboard/presentation/riverpod/audio_player_provider.dart';
 
 class PlayerPage extends ConsumerStatefulWidget {
@@ -15,7 +15,7 @@ class PlayerPage extends ConsumerStatefulWidget {
     super.key,
   });
 
-  final List<MusicModel> songModel;
+  final List<dynamic> songModel;
   final int songIndex;
 
   @override

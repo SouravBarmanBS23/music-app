@@ -5,6 +5,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
   final audioPlayer = AudioPlayer();
   final storagePermission = Permission.storage;
   late final AnimationController animationController;
+  //static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   @override
   AudioPlayerStateTest build() {
@@ -52,7 +53,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
     audioPlayer.seek(duration);
   }
 
-  void playSongs(String? uri, int index, MusicModel songModel) {
+  void playSongs(String? uri, int index, dynamic songModel) {
     try {
       if (uri != null) {
         final uriData = Uri.parse(uri);
@@ -80,12 +81,13 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
   }
 
   Future<void> requestPermission() async {
-    const permission = Permission.storage;
+    final deviceInfo = await DeviceInfoPlugin().androidInfo;
+    final permission =
+        deviceInfo.version.sdkInt > 32 ? Permission.audio : Permission.storage;
     final permissionNotifier = ref.read(permissionGranted.notifier);
 
     if (await permission.status.isDenied) {
       final result = await permission.request();
-
       if (result.isGranted) {
         permissionNotifier.state = 1;
       } else if (result.isDenied) {
@@ -99,7 +101,53 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
     }
   }
 
-  void playPrevious(String? uri, int index, MusicModel songModel) {
+  Future<void> requestAudioAndStoragePermissions() async {
+    final permissionNotifier = ref.read(permissionGranted.notifier);
+
+    final audioPermissionStatus = await Permission.audio.status;
+    final mediaLibraryWritePermissionStatus =
+        await Permission.mediaLibrary.status;
+
+    var shouldOpenSettings = false;
+
+    if (audioPermissionStatus.isDenied || audioPermissionStatus.isRestricted) {
+      final audioPermissionRequestResult = await Permission.audio.request();
+      if (audioPermissionRequestResult.isGranted) {
+      } else if (audioPermissionRequestResult.isPermanentlyDenied) {
+        shouldOpenSettings = true;
+      }
+    }
+
+    if (mediaLibraryWritePermissionStatus.isDenied ||
+        mediaLibraryWritePermissionStatus.isRestricted) {
+      final mediaLibraryWritePermissionRequestResult =
+          await Permission.mediaLibrary.request();
+      if (mediaLibraryWritePermissionRequestResult.isGranted) {
+      } else if (mediaLibraryWritePermissionRequestResult.isPermanentlyDenied) {
+
+        shouldOpenSettings = true;
+      }
+    }
+
+
+    if (shouldOpenSettings) {
+      await openAppSettings();
+    }
+
+    if (audioPermissionStatus.isGranted &&
+        mediaLibraryWritePermissionStatus.isGranted) {
+      // Permissions granted, proceed with audio and storage operations
+      permissionNotifier.state = 1;
+
+    } else {
+      // Permissions not granted, handle accordingly
+      permissionNotifier.state = 0;
+      await openAppSettings();
+
+    }
+  }
+
+  void playPrevious(String? uri, int index, dynamic songModel) {
     if (index == 0) {
       audioPlayer
         ..setAudioSource(

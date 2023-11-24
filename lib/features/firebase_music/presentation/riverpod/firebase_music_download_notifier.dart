@@ -26,7 +26,10 @@ class FirebaseMusicDownloadNotifier
 
     final dio = Dio();
     final url = await reference.getDownloadURL();
-    final directory = await getExternalStorageDirectory();
+    final directory = Platform.isIOS
+        ? await getApplicationDocumentsDirectory()
+        : await getExternalStorageDirectory();
+
     print('directory : ${directory?.path}');
     final isExist = notifier.checkMusicExistOrNot(reference.name);
     if (!isExist) {
