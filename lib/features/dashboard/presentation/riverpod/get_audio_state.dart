@@ -1,6 +1,4 @@
-
 part of './get_audio_provider.dart';
-
 
 enum MusicStatus {
   initial,
@@ -25,8 +23,6 @@ class GetAudioState<T> {
       : status = MusicStatus.loading,
         message = null,
         data = null;
-
-
 
   final MusicStatus? status;
   final String? message;

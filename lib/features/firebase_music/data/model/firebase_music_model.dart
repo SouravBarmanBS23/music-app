@@ -1,14 +1,12 @@
-
 import 'package:firebase_storage/firebase_storage.dart';
 
-class FirebaseMusicModel{
-
+class FirebaseMusicModel {
   FirebaseMusicModel({
     required this.name,
     required this.getDownloadUrl,
     required this.reference,
     required this.isSelected,
-});
+  });
 
   String? name;
   String? getDownloadUrl;
@@ -22,8 +20,8 @@ class FirebaseMusicModel{
     Reference? reference,
   }) {
     return FirebaseMusicModel(
-      name:this.name,
-      getDownloadUrl:this.getDownloadUrl,
+      name: this.name,
+      getDownloadUrl: this.getDownloadUrl,
       reference: this.reference,
       isSelected: isSelected ?? this.isSelected,
     );

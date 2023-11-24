@@ -11,9 +11,9 @@ class DownloadProgressNotifier extends StateNotifier<double> {
 
 final downloadProgressProvider =
     StateNotifierProvider<DownloadProgressNotifier, double>((ref) {
-      final notifier = DownloadProgressNotifier();
+  final notifier = DownloadProgressNotifier();
 
-      final cleanup = notifier.addListener((state) => debugPrint('$state'));
-      ref.onDispose(cleanup);
-      return notifier;
+  final cleanup = notifier.addListener((state) => debugPrint('$state'));
+  ref.onDispose(cleanup);
+  return notifier;
 });

@@ -58,7 +58,6 @@ class DropBoxAuthNotifier extends Notifier<AuthState> {
         await Dropbox.authorizeWithCredentials(credentials!);
         final _credentials = await Dropbox.getCredentials();
         if (_credentials != null) {
-          print('authorizeWithCredentials!');
           state = AuthState.authenticated;
           return true;
         }
@@ -67,12 +66,10 @@ class DropBoxAuthNotifier extends Notifier<AuthState> {
         await Dropbox.authorizeWithAccessToken(accessToken!);
         final token = await Dropbox.getAccessToken();
         if (token != null) {
-          print('authorizeWithAccessToken!');
           return true;
         }
       } else {
         await Dropbox.authorize();
-        print('authorize!');
       }
     }
     state = AuthState.unauthenticated;
@@ -99,8 +96,7 @@ class DropBoxAuthNotifier extends Notifier<AuthState> {
 
   Future getAccountName() async {
     if (await checkAuthorized(true)) {
-      final user = await Dropbox.getAccountName();
-      print('user = $user');
+      // final user = await Dropbox.getAccountName();
     }
   }
 }

@@ -1,6 +1,5 @@
-import 'package:core/src/service/cache/cache_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../cache/network_cache/cache_service.dart';
 import 'api.dart';
 import 'src/rest_client.dart';
 

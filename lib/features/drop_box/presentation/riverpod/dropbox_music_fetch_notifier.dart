@@ -8,10 +8,15 @@ import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum DropboxAuthState {
+  initial,
+  authenticated,
+  unauthenticated,
+  loading,
+  error
+}
 
-enum DropboxAuthState { initial, authenticated, unauthenticated, loading, error }
-
-class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
+class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState> {
   final list = List<dynamic>.empty(growable: true);
   String? accessToken;
   String? credentials;
@@ -20,7 +25,6 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
 
   @override
   DropboxAuthState build() {
-
     return DropboxAuthState.initial;
   }
 
@@ -39,7 +43,6 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
   }
 
   Future<bool> checkAuthorized(bool authorize) async {
-
     state = DropboxAuthState.loading;
 
     final _credentials = await Dropbox.getCredentials();
@@ -68,7 +71,6 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
         await Dropbox.authorizeWithCredentials(credentials!);
         final _credentials = await Dropbox.getCredentials();
         if (_credentials != null) {
-          print('authorizeWithCredentials!');
           return true;
         }
       }
@@ -82,13 +84,11 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
         }
       } else {
         await Dropbox.authorize();
-        print('authorize!');
+
       }
     }
     return false;
   }
-
-
 
   Future authorize() async {
     await Dropbox.authorize();
@@ -101,7 +101,7 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
   Future unlinkToken() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('dropboxAccessToken');
-      accessToken = null;
+    accessToken = null;
 
     await Dropbox.unlink();
   }
@@ -110,24 +110,19 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('dropboxCredentials');
 
-      credentials = null;
+    credentials = null;
 
     await Dropbox.unlink();
   }
 
-  Future dropboxLogout()async{
-
+  Future dropboxLogout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('dropboxAccessToken');
     await prefs.remove('dropboxCredentials');
     accessToken = null;
     credentials = null;
     await Dropbox.unlink();
-
   }
-
-
-
 
   Future authorizeWithAccessToken() async {
     await Dropbox.authorizeWithAccessToken(accessToken!);
@@ -139,8 +134,8 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
 
   Future getAccountName() async {
     if (await checkAuthorized(true)) {
-      final user = await Dropbox.getAccountName();
-      print('user = $user');
+    //  final user = await Dropbox.getAccountName();
+
     }
   }
 
@@ -156,7 +151,8 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
           if (isAudioFile(name)) {
             final dropboxItem = DropboxFile(
               pathDisplay: item['pathDisplay'] ?? '',
-              name: name, isDownloaded: false,
+              name: name,
+              isDownloaded: false,
             );
             musicList.add(dropboxItem);
           }
@@ -164,8 +160,7 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
           print('Error creating DropboxFile: $e');
         }
       }
-        ref.refresh(dropboxMusicFetchProvider);
-      print('dropboxItemList length : ${musicList.length}');
+      ref.refresh(dropboxMusicFetchProvider);
     }
   }
 
@@ -176,10 +171,11 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
           : await getExternalStorageDirectory();
       final filepath = '${tempDir?.path}/dropbox/test_upload.txt';
       File(filepath).writeAsStringSync(
-        'contents.. from ${Platform.isIOS ? 'iOS' : 'Android'}\n',);
+        'contents.. from ${Platform.isIOS ? 'iOS' : 'Android'}\n',
+      );
 
       final result =
-      await Dropbox.upload(filepath, '/test_upload.txt', (uploaded, total) {
+          await Dropbox.upload(filepath, '/test_upload.txt', (uploaded, total) {
         print('progress $uploaded / $total');
       });
       print(result);
@@ -195,9 +191,9 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
       print(filepath);
 
       final result = await Dropbox.download('/test_upload.txt', filepath,
-              (downloaded, total) {
-            print('progress $downloaded / $total');
-          });
+          (downloaded, total) {
+        print('progress $downloaded / $total');
+      });
 
       print(result);
       print(File(filepath).statSync());
@@ -208,7 +204,6 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
     final result = await Dropbox.getTemporaryLink(path);
     return result;
   }
-
 
   Future getAccountInfo() async {
     final accountInfo = await Dropbox.getCurrentAccount();
@@ -221,7 +216,6 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
     }
   }
 
-
   bool isAudioFile(String fileName) {
     final lowerCaseName = fileName.toLowerCase();
     return lowerCaseName.endsWith('.mp3') ||
@@ -232,16 +226,10 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState>{
         lowerCaseName.endsWith('.aac');
   }
 
-
-
   void updateDownloadStatus(int index) {
     musicList[index] = musicList[index].copyWith(
-          isDownloaded: !musicList[index].isDownloaded,
-        );
+      isDownloaded: !musicList[index].isDownloaded,
+    );
     ref.refresh(dropboxMusicFetchProvider);
   }
-
-
-
-
 }

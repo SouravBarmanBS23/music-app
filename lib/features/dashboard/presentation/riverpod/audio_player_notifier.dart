@@ -5,7 +5,6 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
   final audioPlayer = AudioPlayer();
   final storagePermission = Permission.storage;
   late final AnimationController animationController;
-  //static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   @override
   AudioPlayerStateTest build() {
@@ -124,11 +123,9 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
           await Permission.mediaLibrary.request();
       if (mediaLibraryWritePermissionRequestResult.isGranted) {
       } else if (mediaLibraryWritePermissionRequestResult.isPermanentlyDenied) {
-
         shouldOpenSettings = true;
       }
     }
-
 
     if (shouldOpenSettings) {
       await openAppSettings();
@@ -138,12 +135,10 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
         mediaLibraryWritePermissionStatus.isGranted) {
       // Permissions granted, proceed with audio and storage operations
       permissionNotifier.state = 1;
-
     } else {
       // Permissions not granted, handle accordingly
       permissionNotifier.state = 0;
       await openAppSettings();
-
     }
   }
 

@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/core/constants/hive_db.dart';
 import 'package:music_app/features/drop_box/presentation/pages/dropbox_music_page.dart';
-import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/pages/firebase_music_page.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_auth_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/music_dowload_provider.dart';
@@ -36,8 +35,6 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
   @override
   Widget build(BuildContext context) {
     final authNotifier = ref.read(firebaseAuthProvider.notifier);
-
-    final dropBoxAuthNotifier = ref.read(dropboxMusicFetchProvider.notifier);
 
     ref.listen<FirebaseAuthState>(firebaseAuthProvider,
         (previousState, newState) {

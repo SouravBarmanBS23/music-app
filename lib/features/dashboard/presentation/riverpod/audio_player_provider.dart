@@ -8,7 +8,6 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 part './audio_player_notifier.dart';
 part './audio_player_state.dart';
 

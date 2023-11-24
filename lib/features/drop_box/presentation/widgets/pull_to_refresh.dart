@@ -15,7 +15,7 @@ class PullToRefresh extends StatelessWidget {
           width: 160.w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.white12, //const Color(0xff1c1f29),
+            color: Colors.white12,
           ),
           child: Text(
             Strings.pullToRefresh,

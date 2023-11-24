@@ -11,8 +11,9 @@ class _DropboxMusicListState extends ConsumerState<DropboxMusicList> {
   @override
   Widget build(BuildContext context) {
     final dropBoxFetchNotifier = ref.read(dropboxMusicFetchProvider.notifier);
-    final dropBoxMusicDownloadNotifier =
-        ref.read(dropBoxMusicDownloadProvider.notifier);
+    final dropboxHiveBox =
+        ref.read(cloudDownloadCacheServiceProvider(dropboxHiveBoxName));
+
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       itemCount: dropBoxFetchNotifier.musicList.length,
@@ -47,8 +48,7 @@ class _DropboxMusicListState extends ConsumerState<DropboxMusicList> {
                 FontWeight.w400,
               ),
             ),
-            trailing: dropBoxMusicDownloadNotifier.downloadItems
-                        .contains(musicName.name) ||
+            trailing: dropboxHiveBox.isContain(musicName.name) ||
                     musicName.isDownloaded
                 ? IconButton(
                     onPressed: () {},

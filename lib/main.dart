@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -23,16 +24,30 @@ void main() async {
     androidShowNotificationBadge: true,
     notificationColor: Colors.white,
   );
-  final directory = await getApplicationDocumentsDirectory();
-  Hive.init(directory.path);
-  await Hive.openBox<String>('cloud-download');
-  await Hive.openBox<String>('dropbox-download');
-  await Hive.openBox<String>('app-directory');
+  // final directory = await getApplicationDocumentsDirectory();
+  // Hive.init(directory.path);
+  // await Hive.openBox<String>('cloud-download');
+  // await Hive.openBox<String>('dropbox-download');
+  // await Hive.openBox<String>('app-directory');
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
+
+  @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    Future((){
+      ref..read(cloudDownloadCacheServiceProvider(firebaseHiveBoxName))
+      ..read(cloudDownloadCacheServiceProvider(dropboxHiveBoxName));
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(

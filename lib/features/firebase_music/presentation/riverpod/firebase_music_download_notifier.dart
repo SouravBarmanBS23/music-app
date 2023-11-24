@@ -22,18 +22,14 @@ class FirebaseMusicDownloadNotifier
 
   Future<void> downloadFile(Reference reference, int index) async {
     final notifier = ref.read(musicDownloadListProvider.notifier);
-    final scanFolderNotifier = ref.read(audioPlayerProvider.notifier);
-
     final dio = Dio();
     final url = await reference.getDownloadURL();
     final directory = Platform.isIOS
         ? await getApplicationDocumentsDirectory()
         : await getExternalStorageDirectory();
 
-    print('directory : ${directory?.path}');
-    final isExist = notifier.checkMusicExistOrNot(reference.name);
+    final isExist = await notifier.checkMusicExistOrNot(reference.name);
     if (!isExist) {
-      print('file does not exist');
       await dio.download(
         url,
         '${directory?.path}/music/${reference.name}',
@@ -41,12 +37,9 @@ class FirebaseMusicDownloadNotifier
           final received = rcv;
           final fileSize = total;
           final downloadPercentage = calculatePercentage(received, fileSize);
-          print('Download percentage: $downloadPercentage%');
 
           if (downloadPercentage == 100.0) {
-            notifier
-              ..addItem(reference.name)
-              ..cacheMusicName(reference.name);
+            notifier.cacheMusicName(reference.name);
 
             state = FirebaseMusicDownloadState(
               isLoading: false,

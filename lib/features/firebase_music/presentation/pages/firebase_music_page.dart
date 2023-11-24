@@ -10,7 +10,6 @@ import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_auth_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_music_download_provider.dart';
-import 'package:music_app/features/firebase_music/presentation/riverpod/music_dowload_provider.dart';
 
 class FirebaseMusicPage extends ConsumerStatefulWidget {
   const FirebaseMusicPage({super.key});
@@ -23,8 +22,9 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(firebaseMusicDownloadProvider.notifier);
-    final downloadNotifier = ref.watch(musicDownloadListProvider.notifier);
     final firebaseAuthNotifier = ref.read(firebaseAuthProvider.notifier);
+    final firebaseBox =
+        ref.read(cloudDownloadCacheServiceProvider(firebaseHiveBoxName));
 
     ref
       ..listen(firebaseMusicDownloadProvider, (previous, next) {
@@ -163,7 +163,7 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
                                   FontWeight.w400,
                                 ),
                               ),
-                              trailing: downloadNotifier.downloadItems.contains(
+                              trailing: firebaseBox.isContain(
                                 file.name,
                               )
                                   ? IconButton(

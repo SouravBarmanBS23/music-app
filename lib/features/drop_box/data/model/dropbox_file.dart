@@ -1,10 +1,8 @@
 class DropboxFile {
-
   DropboxFile({
     required this.pathDisplay,
     required this.name,
     required this.isDownloaded,
-
   });
   final String pathDisplay;
   final String name;
@@ -22,5 +20,4 @@ class DropboxFile {
       isDownloaded: isDownloaded ?? this.isDownloaded,
     );
   }
-
 }
