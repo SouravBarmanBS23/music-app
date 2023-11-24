@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:core/src/music/music_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -144,7 +145,7 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                     margin: EdgeInsets.only(top: 5.h),
                     width: double.infinity,
                     child: Text(
-                      'No Artist',
+                      Strings.unknownArtist,
                       maxLines: 1,
                       style: AppTextStyle.textStyleOne(
                         Colors.white,

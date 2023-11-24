@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:core/core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/core/constants/hive_db.dart';
-import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/drop_box/presentation/pages/dropbox_music_page.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/pages/firebase_music_page.dart';
@@ -36,34 +36,20 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
   @override
   Widget build(BuildContext context) {
     final authNotifier = ref.read(firebaseAuthProvider.notifier);
-    // final authState = ref.watch(firebaseAuthProvider);
-    //
-    // final dropBoxAuthState = ref.watch(dropBoxAuthProvider);
+
     final dropBoxAuthNotifier = ref.read(dropboxMusicFetchProvider.notifier);
 
-    ref
-      .listen<FirebaseAuthState>(firebaseAuthProvider,
-          (previousState, newState) {
-        if (newState.isSigning == true) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const FirebaseMusicPage(),
-            ),
-          );
-        }
-      });
-      // ..listen<DropboxAuthState>(dropboxMusicFetchProvider,
-      //     (previousState, newState) {
-      //   if (newState == DropboxAuthState.authenticated) {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => const DropBoxMusicPage(),
-      //       ),
-      //     );
-      //   } else {}
-      // });
+    ref.listen<FirebaseAuthState>(firebaseAuthProvider,
+        (previousState, newState) {
+      if (newState.isSigning == true) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const FirebaseMusicPage(),
+          ),
+        );
+      }
+    });
 
     return Scaffold(
       backgroundColor: const Color(0xff071d35),
@@ -134,17 +120,17 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                       color: Colors.white,
                     ),
                     child: Text(
-                      'Download Music from Cloud',
+                      Strings.cloudDownload,
                     ),
                   ),
                 ),
                 Column(
                   children: [
-                    InkWell(
-                      onTap: () {
+                    CloudButton(
+                      cloudName: 'Dropbox',
+                      cloudImage: 'dropbox.png',
+                      onButtonTap: () {
                         HapticFeedback.mediumImpact();
-                        // dropBoxAuthNotifier..initDropbox()
-                        // ..checkAuthorized(true);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -152,103 +138,20 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                           ),
                         );
                       },
-                      child: Container(
-                        margin: EdgeInsets.only(top: 0.05.sh),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        height: 60,
-                        width: 0.6.sw,
-                        decoration: BoxDecoration(
-                          color: Colors.white38, // const Color(0xffa37c75),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Dropbox',
-                              style: AppTextStyle.textStyleOne(
-                                Colors.white,
-                                20,
-                                FontWeight.w700,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: Image.asset(
-                                'images/cloud/dropbox.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.only(top: 0.02.sh),
-                        height: 60,
-                        width: 0.6.sw,
-                        decoration: BoxDecoration(
-                          color: Colors.white38,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'iCloud',
-                              style: AppTextStyle.textStyleOne(
-                                Colors.white,
-                                20,
-                                FontWeight.w700,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: Image.asset(
-                                'images/cloud/icloud.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    CloudButton(
+                      cloudName: 'iCloud',
+                      cloudImage: 'icloud.png',
+                      onButtonTap: () {
+                        HapticFeedback.mediumImpact();
+                      },
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.only(top: 0.02.sh),
-                        height: 60,
-                        width: 0.6.sw,
-                        decoration: BoxDecoration(
-                          color: Colors.white38,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Drive',
-                              style: AppTextStyle.textStyleOne(
-                                Colors.white,
-                                20,
-                                FontWeight.w700,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: Image.asset(
-                                'images/cloud/google-drive-1.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    CloudButton(
+                      cloudName: 'Drive',
+                      cloudImage: 'google-drive-1.png',
+                      onButtonTap: () {
+                        HapticFeedback.mediumImpact();
+                      },
                     ),
                   ],
                 ),
@@ -278,7 +181,6 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               HapticFeedback.mediumImpact();
-                              print('goole signing');
                               authNotifier.handleSignIn();
                             },
                         ), // Color(0xfff9d3a2)

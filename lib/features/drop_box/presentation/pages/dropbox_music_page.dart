@@ -171,7 +171,7 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Featured',
+                          Strings.featured,
                           maxLines: 1,
                           style: AppTextStyle.textStyleOne(
                             Colors.white,
@@ -180,7 +180,7 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
                           ),
                         ),
                         Text(
-                          'DropBox Music',
+                          Strings.downloadedSongs,
                           maxLines: 1,
                           style: AppTextStyle.textStyleOne(
                             Colors.white,

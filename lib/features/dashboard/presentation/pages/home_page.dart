@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +24,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    // ref.read(audioPlayerProvider.notifier).querySongs();
     _initializeApp();
   }
 
@@ -140,7 +140,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               padding: const EdgeInsets.only(top: 5, bottom: 5),
               alignment: Alignment.centerLeft,
               child: Text(
-                'Downloaded songs ',
+                Strings.downloadedSongs,
                 style: AppTextStyle.textStyleOne(
                   Colors.white,
                   20,

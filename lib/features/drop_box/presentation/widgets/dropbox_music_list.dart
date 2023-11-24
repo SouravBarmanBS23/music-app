@@ -1,6 +1,4 @@
-
 part of '../pages/dropbox_music_page.dart';
-
 
 class DropboxMusicList extends ConsumerStatefulWidget {
   const DropboxMusicList({super.key});
@@ -14,7 +12,7 @@ class _DropboxMusicListState extends ConsumerState<DropboxMusicList> {
   Widget build(BuildContext context) {
     final dropBoxFetchNotifier = ref.read(dropboxMusicFetchProvider.notifier);
     final dropBoxMusicDownloadNotifier =
-    ref.read(dropBoxMusicDownloadProvider.notifier);
+        ref.read(dropBoxMusicDownloadProvider.notifier);
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       itemCount: dropBoxFetchNotifier.musicList.length,
@@ -50,33 +48,31 @@ class _DropboxMusicListState extends ConsumerState<DropboxMusicList> {
               ),
             ),
             trailing: dropBoxMusicDownloadNotifier.downloadItems
-                .contains(musicName.name) ||
-                musicName.isDownloaded
+                        .contains(musicName.name) ||
+                    musicName.isDownloaded
                 ? IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.download_for_offline_outlined,
-                color: Colors.white,
-                size: 25,
-              ),
-            )
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.download_for_offline_outlined,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  )
                 : IconButton(
-              onPressed: () {
-                // dropBoxFetchNotifier.updateDownloadStatus(index);
-                HapticFeedback.mediumImpact();
-                ref
-                    .read(
-                  dropBoxMusicDownloadProvider
-                      .notifier,
-                )
-                    .downloadTest(musicName.name, index);
-              },
-              icon: const Icon(
-                Icons.download,
-                color: Colors.white,
-                size: 25,
-              ),
-            ),
+                    onPressed: () {
+                      HapticFeedback.mediumImpact();
+                      ref
+                          .read(
+                            dropBoxMusicDownloadProvider.notifier,
+                          )
+                          .downloadTest(musicName.name, index);
+                    },
+                    icon: const Icon(
+                      Icons.download,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  ),
           ),
         );
       },
