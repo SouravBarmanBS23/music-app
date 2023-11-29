@@ -27,7 +27,7 @@ class _DropboxMusicListState extends ConsumerState<DropboxMusicList> {
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.white10, //const Color(0xff1c1f29),
+            color: Colors.white10,
           ),
           child: ListTile(
             shape: RoundedRectangleBorder(

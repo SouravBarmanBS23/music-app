@@ -14,7 +14,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
     );
   }
 
-  void isPlaying(int index, bool value) {
+  void isPlaying(int index, {required bool value}) {
     if (value) {
       audioPlayer.play();
       state = AudioPlayerStateTest(
@@ -62,7 +62,6 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
               uriData,
               tag: MediaItem(
                 id: '${songModel.id}',
-                //  album: '${songModel.album}',
                 title: songModel.displayName,
                 artUri: Uri.parse(
                   'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',
@@ -133,10 +132,8 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
 
     if (audioPermissionStatus.isGranted &&
         mediaLibraryWritePermissionStatus.isGranted) {
-      // Permissions granted, proceed with audio and storage operations
       permissionNotifier.state = 1;
     } else {
-      // Permissions not granted, handle accordingly
       permissionNotifier.state = 0;
       await openAppSettings();
     }
@@ -150,7 +147,6 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
             Uri.parse(uri!),
             tag: MediaItem(
               id: '${songModel.id}',
-              // album: '${songModel.album}',
               title: songModel.displayName,
               artUri: Uri.parse(
                 'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',
@@ -168,10 +164,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
             AudioSource.uri(
               Uri.parse(uri!),
               tag: MediaItem(
-                // Specify a unique ID for each media item:
                 id: '${songModel.id}',
-                // Metadata to display in the notification:
-                // album: '${songModel.album}',
                 title: songModel.displayName,
                 artUri: Uri.parse(
                   'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',
@@ -195,10 +188,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
           AudioSource.uri(
             Uri.parse(uri!),
             tag: MediaItem(
-              // Specify a unique ID for each media item:
               id: '${songModel.id}',
-              // Metadata to display in the notification:
-              //  album: '${songModel.album}',
               title: songModel.displayName,
               artUri: Uri.parse(
                 'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',
@@ -216,10 +206,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
             AudioSource.uri(
               Uri.parse(uri!),
               tag: MediaItem(
-                // Specify a unique ID for each media item:
                 id: '${songModel.id}',
-                // Metadata to display in the notification:
-                // album: '${songModel.album}',
                 title: songModel.displayName,
                 artUri: Uri.parse(
                   'https://t3.ftcdn.net/jpg/03/01/43/92/360_F_301439209_vpF837oCGM1lp0cnC7stzCBn3th0dQ6O.jpg',

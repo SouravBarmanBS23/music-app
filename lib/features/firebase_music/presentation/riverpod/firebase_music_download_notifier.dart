@@ -63,7 +63,7 @@ class FirebaseMusicDownloadNotifier
 
   double calculatePercentage(int received, int total) {
     if (total == 0) {
-      return 0; // To avoid division by zero
+      return 0;
     }
     return (received / total) * 100;
   }

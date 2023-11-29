@@ -57,7 +57,7 @@ class _MusicListState extends ConsumerState<MusicList> {
                 margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.white10, //const Color(0xff1c1f29),
+                  color: Colors.white10,
                 ),
                 child: ListTile(
                   shape: RoundedRectangleBorder(

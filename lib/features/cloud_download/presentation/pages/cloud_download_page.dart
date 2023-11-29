@@ -180,7 +180,7 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                               HapticFeedback.mediumImpact();
                               authNotifier.handleSignIn();
                             },
-                        ), // Color(0xfff9d3a2)
+                        ),
                       ],
                     ),
                   ),

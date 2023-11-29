@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:core/src/music/music_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -227,13 +226,13 @@ class _PlayerPageState extends ConsumerState<PlayerPage>
                             if (notifier.audioPlayer.playing == true) {
                               notifier.isPlaying(
                                 state.playIndex,
-                                false,
+                                value: false,
                               );
                               animationController.stop();
                             } else {
                               notifier.isPlaying(
                                 state.playIndex,
-                                true,
+                                value: true,
                               );
                               animationController.repeat();
                             }

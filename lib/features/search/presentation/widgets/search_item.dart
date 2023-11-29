@@ -37,7 +37,7 @@ class _MusicListState extends ConsumerState<SearchItem> {
               margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.white10, //const Color(0xff1c1f29),
+                color: Colors.white10,
               ),
               child: ListTile(
                 shape: RoundedRectangleBorder(
@@ -102,14 +102,12 @@ class _MusicListState extends ConsumerState<SearchItem> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            //no-music-found.json
             height: 100,
             width: 100,
             child: Lottie.asset(
               'lottie-animation/show-search-animation.json',
               repeat: true,
               fit: BoxFit.cover,
-              // reverse: true,
             ),
           ),
         ],
@@ -128,7 +126,6 @@ class _MusicListState extends ConsumerState<SearchItem> {
                 width: 270,
                 alignment: Alignment.center,
                 fit: BoxFit.cover,
-                // reverse: true,
               ),
             ],
           ),

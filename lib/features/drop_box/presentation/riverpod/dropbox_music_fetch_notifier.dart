@@ -29,12 +29,12 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState> {
   }
 
   Future initDropbox() async {
-    if (dropbox_key == 'dropbox_key') {
+    if (dropboxKey == 'dropbox_key') {
       showInstruction = true;
       return;
     }
     state = DropboxAuthState.loading;
-    await Dropbox.init(dropbox_clientId, dropbox_key, dropbox_secret);
+    await Dropbox.init(dropboxClientId, dropboxKey, dropboxSecret);
 
     final prefs = await SharedPreferences.getInstance();
     accessToken = prefs.getString('dropboxAccessToken');
@@ -84,7 +84,6 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState> {
         }
       } else {
         await Dropbox.authorize();
-
       }
     }
     return false;
@@ -134,8 +133,6 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState> {
 
   Future getAccountName() async {
     if (await checkAuthorized(true)) {
-    //  final user = await Dropbox.getAccountName();
-
     }
   }
 
@@ -160,7 +157,7 @@ class DropBoxMusicFetchNotifier extends Notifier<DropboxAuthState> {
           print('Error creating DropboxFile: $e');
         }
       }
-      ref.refresh(dropboxMusicFetchProvider);
+     ref.invalidate(dropboxMusicFetchProvider);
     }
   }
 

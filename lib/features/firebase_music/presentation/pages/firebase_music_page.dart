@@ -123,7 +123,6 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
                 margin: const EdgeInsets.only(top: 10),
                 height: 0.6.sh,
                 width: double.infinity,
-                //  color: Colors.white,
                 child: FutureBuilder<ListResult>(
                   future: notifier.futureFiles,
                   builder: (context, snapshot) {
@@ -142,7 +141,7 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: Colors.white10, //const Color(0xff1c1f29),
+                              color: Colors.white10,
                             ),
                             child: ListTile(
                               shape: RoundedRectangleBorder(

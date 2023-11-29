@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:core/core.dart';
 import 'package:dropbox_client/dropbox_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +25,7 @@ class DropboxMusicDownloadNotifier extends Notifier<DownloadState> {
 
   Future listFolder(String path) async {
     final dropBoxAuthNotifier = ref.read(dropBoxAuthProvider.notifier);
-    if (await dropBoxAuthNotifier.checkAuthorized(true)) {
+    if (await dropBoxAuthNotifier.checkAuthorized(authorize: true)) {
       final result = await Dropbox.listFolder(path);
       list
         ..clear()
@@ -47,21 +46,13 @@ class DropboxMusicDownloadNotifier extends Notifier<DownloadState> {
         await directory.create(recursive: true);
       }
       final filepath = '${tempDir?.path}/dropbox/download/$musicName';
-      print(filepath);
       state = DownloadState.loading;
-      final result =
-          await Dropbox.download('/$musicName', filepath, (downloaded, total) {
-        //   progress.state = (downloaded / total) * 100;
+      await Dropbox.download('/$musicName', filepath, (downloaded, total) {
         progress.updateProgress((downloaded / total) * 100);
-        //  progress.state = result;
-        print('progress ${(downloaded / total) * 100}');
         cacheMusicName(musicName);
       });
       state = DownloadState.success;
       dropBoxFetchNotifier.updateDownloadStatus(index);
-
-      print(result);
-      print(File(filepath).statSync());
     }
   }
 
@@ -89,7 +80,6 @@ class DropboxMusicDownloadNotifier extends Notifier<DownloadState> {
       for (final key in box.keys) {
         final musicName = dropboxHiveBox.getKey(key);
         downloadItems.add(musicName!);
-        print('getCachedMusicName : $musicName');
       }
     }
   }

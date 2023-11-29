@@ -50,7 +50,6 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
         if (next == DropboxAuthState.loading) {
         } else {
           await userInfoNotifier.getAccountInfo();
-          //   await dropBoxFetchNotifier.listFolder('');
         }
       })
       ..listen(dropBoxMusicDownloadProvider, (previous, next) {
@@ -270,7 +269,6 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
                     margin: const EdgeInsets.only(top: 10),
                     height: 0.4.sh,
                     width: double.infinity,
-                    //  color: Colors.white,
                     child: dropBoxFetchNotifier.musicList.isEmpty
                         ? const PullToRefresh()
                         : const DropboxMusicList(),

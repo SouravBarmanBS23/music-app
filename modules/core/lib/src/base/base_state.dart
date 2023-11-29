@@ -1,4 +1,3 @@
-
 enum Status {
   initial,
   loading,
@@ -22,8 +21,6 @@ class BaseState<T> {
       : status = Status.loading,
         message = null,
         data = null;
-
-
 
   final Status? status;
   final String? message;

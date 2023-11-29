@@ -3,7 +3,6 @@ part of './music_dowload_provider.dart';
 class MusicDownloadNotifier extends Notifier<BaseState> {
   @override
   BaseState build() {
-    // getCachedMusicName();
     return BaseState(data: []);
   }
 
@@ -59,15 +58,15 @@ class MusicDownloadNotifier extends Notifier<BaseState> {
     final fileNames = <String>[];
 
     final directory =
-        Directory(directoryPath); // Use the provided directory path
+        Directory(directoryPath);
 
     if (directory.existsSync()) {
       final fileList =
-          directory.listSync(); // Get a list of files in the directory
+          directory.listSync();
 
       for (final file in fileList) {
         if (file is File) {
-          fileNames.add(file.path.split('/').last); // Extracting file name
+          fileNames.add(file.path.split('/').last);
         }
       }
     }

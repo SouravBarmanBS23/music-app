@@ -11,5 +11,4 @@ class MusicModel {
   String? displayNameWOExt;
 
   static List<MusicModel> musicModelList = [];
-
 }

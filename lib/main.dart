@@ -24,11 +24,6 @@ void main() async {
     androidShowNotificationBadge: true,
     notificationColor: Colors.white,
   );
-  // final directory = await getApplicationDocumentsDirectory();
-  // Hive.init(directory.path);
-  // await Hive.openBox<String>('cloud-download');
-  // await Hive.openBox<String>('dropbox-download');
-  // await Hive.openBox<String>('app-directory');
   runApp(const ProviderScope(child: MyApp()));
 }
 

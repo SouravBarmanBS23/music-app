@@ -162,7 +162,6 @@ class _MusicSearchState extends ConsumerState<MusicSearch> {
                 ),
               ),
               Container(
-                // padding: const EdgeInsets.only(top: 20),
                 height: 0.70.sh,
                 width: double.infinity,
                 decoration: const BoxDecoration(
@@ -179,7 +178,6 @@ class _MusicSearchState extends ConsumerState<MusicSearch> {
                   child: const SearchItem(),
                 ),
               ),
-              // show_search_animation.json
             ],
           ),
         ),

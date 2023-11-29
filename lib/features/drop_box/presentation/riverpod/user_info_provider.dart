@@ -18,7 +18,6 @@ class UserInfoProvider extends Notifier<UserState> {
   }
 
   Future getAccountInfo() async {
-    print('getAccountInfo');
     userModel.clear();
     state = UserState.loading;
     final accountInfo = await Dropbox.getCurrentAccount();

@@ -11,15 +11,14 @@ class GetAudioNotifier extends Notifier<GetAudioState> {
 
     final directory = Directory(
       directoryPath,
-    ); // Use the provided directory path
+    );
 
     if (directory.existsSync()) {
-      final fileList =
-          directory.listSync(); // Get a list of files in the directory
+      final fileList = directory.listSync();
 
       for (final file in fileList) {
         if (file is File) {
-          files.add(file); // Add the file to the list
+          files.add(file);
         }
       }
     }
@@ -40,7 +39,6 @@ class GetAudioNotifier extends Notifier<GetAudioState> {
       '${directory?.path}/${AudioDirectories.music}',
     );
 
-    print('Total files found: ${files.length}');
     for (var file = 0; file < files.length; file++) {
       if (files[file].path.endsWith('.mp3') ||
           files[file].path.endsWith('.wav') ||
@@ -81,7 +79,6 @@ class GetAudioNotifier extends Notifier<GetAudioState> {
       '${directory?.path}/dropbox/download',
     );
 
-    print('Total files found: ${files.length}');
     for (var file = 0; file < files.length; file++) {
       if (files[file].path.endsWith('.mp3') ||
           files[file].path.endsWith('.wav') ||

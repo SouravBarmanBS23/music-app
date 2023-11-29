@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CloudButton extends StatefulWidget {
-  const CloudButton({super.key, required this.cloudName, required this.cloudImage, required this.onButtonTap});
+  const CloudButton(
+      {super.key,
+      required this.cloudName,
+      required this.cloudImage,
+      required this.onButtonTap});
   final String cloudName;
   final String cloudImage;
   final Function onButtonTap;
@@ -15,7 +19,7 @@ class _CloudButtonState extends State<CloudButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         widget.onButtonTap.call();
       },
       child: Container(
@@ -29,13 +33,14 @@ class _CloudButtonState extends State<CloudButton> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-             Text(
+            Text(
               widget.cloudName,
               style: const TextStyle(
-                 color: Colors.white,
+                color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
-            ),),
+              ),
+            ),
             SizedBox(
               height: 40,
               width: 40,

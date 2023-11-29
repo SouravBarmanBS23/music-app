@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +134,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
             Container(
-              // color: Colors.white12,
               margin: const EdgeInsets.only(left: 25, top: 10, bottom: 5),
               padding: const EdgeInsets.only(top: 5, bottom: 5),
               alignment: Alignment.centerLeft,

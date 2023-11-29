@@ -8,7 +8,6 @@ class DropboxFile {
   final String name;
   bool isDownloaded = false;
 
-  // mane a copyWith method
   DropboxFile copyWith({
     String? pathDisplay,
     String? name,
