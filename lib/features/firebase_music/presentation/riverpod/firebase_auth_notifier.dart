@@ -33,7 +33,7 @@ class FirebaseAuthNotifier extends Notifier<FirebaseAuthState> {
         );
       }
     } catch (e) {
-      print('Error $e');
+      throw Exception(e);
     }
   }
 
@@ -58,7 +58,7 @@ class FirebaseAuthNotifier extends Notifier<FirebaseAuthState> {
         isSignout: true,
       );
     } catch (e) {
-      print('Error $e');
+      throw Exception(e);
     }
   }
 }

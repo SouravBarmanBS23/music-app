@@ -57,12 +57,10 @@ class MusicDownloadNotifier extends Notifier<BaseState> {
   Future<List<String>> getFileNamesFromFolder(String directoryPath) async {
     final fileNames = <String>[];
 
-    final directory =
-        Directory(directoryPath);
+    final directory = Directory(directoryPath);
 
     if (directory.existsSync()) {
-      final fileList =
-          directory.listSync();
+      final fileList = directory.listSync();
 
       for (final file in fileList) {
         if (file is File) {

@@ -28,7 +28,9 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
     super.initState();
     Future(() {
       ref.read(dropboxMusicFetchProvider.notifier).initDropbox();
-      ref.read(dropboxMusicFetchProvider.notifier).checkAuthorized(true);
+      ref.read(dropboxMusicFetchProvider.notifier).checkAuthorized(
+            authorize: true,
+          );
       ref.read(dropBoxMusicDownloadProvider.notifier).getCachedMusicName();
     });
   }

@@ -74,7 +74,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
         updatePosition();
       } else {}
     } catch (e) {
-      Log.debug('Error while playing the audio: $e');
+      throw Exception(e.toString());
     }
   }
 
@@ -176,7 +176,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
         state = AudioPlayerStateTest(playIndex: index - 1, isPlaying: true);
         updatePosition();
       } catch (e) {
-        Log.debug(e.toString());
+        throw Exception(e.toString());
       }
     }
   }
@@ -218,7 +218,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerStateTest> {
         state = AudioPlayerStateTest(playIndex: index + 1, isPlaying: true);
         updatePosition();
       } catch (e) {
-        Log.debug(e.toString());
+        throw Exception(e.toString());
       }
     }
   }
