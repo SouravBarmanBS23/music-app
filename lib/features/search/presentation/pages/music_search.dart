@@ -19,6 +19,8 @@ class MusicSearch extends ConsumerStatefulWidget {
 }
 
 class _MusicSearchState extends ConsumerState<MusicSearch> {
+  final searchController = TextEditingController();
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -49,7 +51,7 @@ class _MusicSearchState extends ConsumerState<MusicSearch> {
         appBar: AppBar(
           backgroundColor: bgColor,
           title: Text(
-            'Find Your Music',
+            Strings.findYourMusic,
             style: AppTextStyle.textStyleOne(
               Colors.white,
               20,
@@ -124,7 +126,7 @@ class _MusicSearchState extends ConsumerState<MusicSearch> {
                         },
                         borderRadius: BorderRadius.circular(10),
                         fillColor: const Color(0xfff6f7fb),
-                        textEditingController: notifier.searchController,
+                        textEditingController: searchController,
                         validator: Validators.isValidPassword,
                         hintTextStyle: AppTextStyle.textStyleOne(
                           const Color(0xffC4C5C4),
@@ -136,7 +138,7 @@ class _MusicSearchState extends ConsumerState<MusicSearch> {
                         prefix: InkWell(
                           onTap: () {
                             notifier.filterSongs(
-                              notifier.searchController.text,
+                              searchController.text,
                             );
                           },
                           child: const Icon(
@@ -160,7 +162,6 @@ class _MusicSearchState extends ConsumerState<MusicSearch> {
                 ),
               ),
               Container(
-                // padding: const EdgeInsets.only(top: 20),
                 height: 0.70.sh,
                 width: double.infinity,
                 decoration: const BoxDecoration(
@@ -177,7 +178,6 @@ class _MusicSearchState extends ConsumerState<MusicSearch> {
                   child: const SearchItem(),
                 ),
               ),
-              // show_search_animation.json
             ],
           ),
         ),

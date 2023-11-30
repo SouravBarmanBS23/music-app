@@ -10,7 +10,6 @@ import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_auth_provider.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_music_download_provider.dart';
-import 'package:music_app/features/firebase_music/presentation/riverpod/music_dowload_provider.dart';
 
 class FirebaseMusicPage extends ConsumerStatefulWidget {
   const FirebaseMusicPage({super.key});
@@ -23,58 +22,48 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(firebaseMusicDownloadProvider.notifier);
-    // final state = ref.read(firebaseMusicDownloadProvider);
-    // final downloadState = ref.watch(musicDownloadListProvider);
-    final downloadNotifier = ref.watch(musicDownloadListProvider.notifier);
     final firebaseAuthNotifier = ref.read(firebaseAuthProvider.notifier);
+    final firebaseBox =
+        ref.read(cloudDownloadCacheServiceProvider(firebaseHiveBoxName));
 
-    ref..listen(firebaseMusicDownloadProvider, (previous, next) {
-      if ((next.isCompleted == true) &&
-          (next.alreadyExist == false) &&
-          (next.isLoading == false)) {
-        ShowSnackBar.showSnackBar(
-          context,
-          'Download Completed',
-          next.musicName,
-        );
-      }
-      if ((next.isCompleted == false) && (next.alreadyExist == true)) {
-        ShowSnackBar.showSnackBar(
-          context,
-          'Already Downloaded',
-          next.musicName,
-        );
-      }
-      // else {
-      //   ShowSnackBar.showSnackBar(
-      //     context,
-      //     'Downloading',
-      //     '${next.musicName} - ${double.parse(next.musicName).toStringAsFixed(2)}% completed',
-      //   );
-      // }
-    })
-    ..listen(firebaseAuthProvider, (previous, next) {
-      if(next.isSignout == true){
-        Navigator.pop(context);
-      }
-    });
+    ref
+      ..listen(firebaseMusicDownloadProvider, (previous, next) {
+        if ((next.isCompleted == true) &&
+            (next.alreadyExist == false) &&
+            (next.isLoading == false)) {
+          ShowSnackBar.showSnackBar(
+            context,
+            'Download Completed',
+            next.musicName,
+          );
+        }
+        if ((next.isCompleted == false) && (next.alreadyExist == true)) {
+          ShowSnackBar.showSnackBar(
+            context,
+            'Already Downloaded',
+            next.musicName,
+          );
+        }
+      })
+      ..listen(firebaseAuthProvider, (previous, next) {
+        if (next.isSignout == true) {
+          Navigator.pop(context);
+        }
+      });
 
     return Scaffold(
       backgroundColor: const Color(0xff350c44),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton.small(
-        onPressed: ()  {
+        onPressed: () {
           HapticFeedback.mediumImpact();
           firebaseAuthNotifier.handleSignOut();
         },
         child: const Icon(Icons.logout_outlined),
-
       ),
       appBar: AppBar(
         toolbarHeight: 0.04.sh,
-        //   backgroundColor: Colors.transparent,
         backgroundColor: const Color(0xff350c44),
-
         leading: IconButton(
           onPressed: () {
             HapticFeedback.mediumImpact();
@@ -134,7 +123,6 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
                 margin: const EdgeInsets.only(top: 10),
                 height: 0.6.sh,
                 width: double.infinity,
-                //  color: Colors.white,
                 child: FutureBuilder<ListResult>(
                   future: notifier.futureFiles,
                   builder: (context, snapshot) {
@@ -153,7 +141,7 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: Colors.white10, //const Color(0xff1c1f29),
+                              color: Colors.white10,
                             ),
                             child: ListTile(
                               shape: RoundedRectangleBorder(
@@ -174,34 +162,34 @@ class _FirebaseMusicPageState extends ConsumerState<FirebaseMusicPage> {
                                   FontWeight.w400,
                                 ),
                               ),
-                              trailing: downloadNotifier.downloadItems.contains(
+                              trailing: firebaseBox.isContain(
                                 file.name,
                               )
                                   ? IconButton(
-                                onPressed: () {
-                                  HapticFeedback.mediumImpact();
-                                  ShowSnackBar.alreadyDownloadedSnackBar(
-                                    context,
-                                    'This song is already downloaded',
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.cloud_done_outlined,
-                                  color: Colors.white,
-                                  size: 25,
-                                ),
-                              )
+                                      onPressed: () {
+                                        HapticFeedback.mediumImpact();
+                                        ShowSnackBar.alreadyDownloadedSnackBar(
+                                          context,
+                                          Strings.alreadyDownloaded,
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.cloud_done_outlined,
+                                        color: Colors.white,
+                                        size: 25,
+                                      ),
+                                    )
                                   : IconButton(
-                                onPressed: () {
-                                  HapticFeedback.mediumImpact();
-                                  notifier.downloadFile(file, index);
-                                },
-                                icon: const Icon(
-                                  Icons.download,
-                                  color: Colors.white,
-                                  size: 25,
-                                ),
-                              ),
+                                      onPressed: () {
+                                        HapticFeedback.mediumImpact();
+                                        notifier.downloadFile(file, index);
+                                      },
+                                      icon: const Icon(
+                                        Icons.download,
+                                        color: Colors.white,
+                                        size: 25,
+                                      ),
+                                    ),
                             ),
                           );
                         },

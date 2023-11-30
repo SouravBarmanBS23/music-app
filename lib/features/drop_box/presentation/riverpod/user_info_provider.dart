@@ -5,7 +5,6 @@ import 'package:music_app/features/drop_box/data/model/user_model.dart';
 
 enum UserState { initial, loading, success, error }
 
-
 final userInfoProvider = NotifierProvider<UserInfoProvider, UserState>(
   UserInfoProvider.new,
 );
@@ -19,7 +18,6 @@ class UserInfoProvider extends Notifier<UserState> {
   }
 
   Future getAccountInfo() async {
-    print('getAccountInfo');
     userModel.clear();
     state = UserState.loading;
     final accountInfo = await Dropbox.getCurrentAccount();
@@ -32,12 +30,7 @@ class UserInfoProvider extends Notifier<UserState> {
       );
       userModel.add(getDataModel);
       state = UserState.success;
-      // print(accountInfo.name!.displayName);
-      // print(accountInfo.email);
-      // print(accountInfo.rootInfo!.homeNamespaceId);
-      // print(accountInfo.country);
     } else {
-      print('error');
       state = UserState.error;
     }
   }

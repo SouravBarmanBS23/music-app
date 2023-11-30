@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -6,7 +5,6 @@ import 'package:music_app/features/search/presentation/riverpod/music_search_sta
 import 'package:on_audio_query/on_audio_query.dart';
 
 class MusicSearchNotifier extends Notifier<MusicSearchState> {
-  final searchController = TextEditingController();
   final audioQuery = OnAudioQuery();
   final audioPlayer = AudioPlayer();
   List<SongModel> filteredSongs = [];

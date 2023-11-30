@@ -57,7 +57,7 @@ class _MusicListState extends ConsumerState<MusicList> {
                 margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.white10, //const Color(0xff1c1f29),
+                  color: Colors.white10,
                 ),
                 child: ListTile(
                   shape: RoundedRectangleBorder(
@@ -83,7 +83,7 @@ class _MusicListState extends ConsumerState<MusicList> {
                     ),
                   ),
                   subtitle: Text(
-                    'Unknown',
+                    Strings.unknownArtist,
                     maxLines: 1,
                     style: AppTextStyle.textStyleOne(
                       Colors.white,
@@ -102,8 +102,6 @@ class _MusicListState extends ConsumerState<MusicList> {
                         )
                       : null,
                   onTap: () {
-                    //  notifier.playSongs(snapshot.data![index].data,
-                    //  index);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -122,7 +120,7 @@ class _MusicListState extends ConsumerState<MusicList> {
       } else {
         return Center(
           child: Text(
-            'No music Found',
+            Strings.noMusicFound,
             style: AppTextStyle.textStyleOne(Colors.white, 22, FontWeight.w500),
           ),
         );
@@ -130,7 +128,7 @@ class _MusicListState extends ConsumerState<MusicList> {
     } else {
       return Center(
         child: Text(
-          'Need to Storage Permission first',
+          Strings.permissionFirst,
           style: AppTextStyle.textStyleOne(Colors.white, 22, FontWeight.w500),
         ),
       );

@@ -17,24 +17,24 @@ class DropBoxAuthNotifier extends Notifier<AuthState> {
   }
 
   Future initDropbox() async {
-    if (dropbox_key == 'dropbox_key') {
+    if (dropboxKey == 'dropbox_key') {
       showInstruction = true;
       return;
     }
 
-    await Dropbox.init(dropbox_clientId, dropbox_key, dropbox_secret);
+    await Dropbox.init(dropboxClientId, dropboxKey, dropboxSecret);
     final prefs = await SharedPreferences.getInstance();
     accessToken = prefs.getString('dropboxAccessToken');
     credentials = prefs.getString('dropboxCredentials');
   }
 
-  Future<bool> checkAuthorized(bool authorize) async {
+  Future<bool> checkAuthorized({required bool authorize}) async {
     state = AuthState.loading;
 
-    final _credentials = await Dropbox.getCredentials();
-    if (_credentials != null) {
-      if (credentials == null || _credentials.isEmpty) {
-        credentials = _credentials;
+    final checkCredentials = await Dropbox.getCredentials();
+    if (checkCredentials != null) {
+      if (credentials == null || checkCredentials.isEmpty) {
+        credentials = checkCredentials;
         await ref.read(userInfoProvider.notifier).getAccountInfo();
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('dropboxCredentials', credentials!);
@@ -56,9 +56,8 @@ class DropBoxAuthNotifier extends Notifier<AuthState> {
     if (authorize) {
       if (credentials != null && credentials!.isNotEmpty) {
         await Dropbox.authorizeWithCredentials(credentials!);
-        final _credentials = await Dropbox.getCredentials();
-        if (_credentials != null) {
-          print('authorizeWithCredentials!');
+        final checkCredentials = await Dropbox.getCredentials();
+        if (checkCredentials != null) {
           state = AuthState.authenticated;
           return true;
         }
@@ -67,12 +66,10 @@ class DropBoxAuthNotifier extends Notifier<AuthState> {
         await Dropbox.authorizeWithAccessToken(accessToken!);
         final token = await Dropbox.getAccessToken();
         if (token != null) {
-          print('authorizeWithAccessToken!');
           return true;
         }
       } else {
         await Dropbox.authorize();
-        print('authorize!');
       }
     }
     state = AuthState.unauthenticated;
@@ -98,9 +95,6 @@ class DropBoxAuthNotifier extends Notifier<AuthState> {
   }
 
   Future getAccountName() async {
-    if (await checkAuthorized(true)) {
-      final user = await Dropbox.getAccountName();
-      print('user = $user');
-    }
+    if (await checkAuthorized(authorize: true)) {}
   }
 }

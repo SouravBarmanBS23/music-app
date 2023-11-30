@@ -15,17 +15,18 @@ class PullToRefresh extends StatelessWidget {
           width: 160.w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.white12, //const Color(0xff1c1f29),
+            color: Colors.white12,
           ),
           child: Text(
-            'Pull to Refresh',
+            Strings.pullToRefresh,
             maxLines: 1,
             style: AppTextStyle.textStyleOne(
               Colors.white,
               18,
               FontWeight.w500,
             ),
-          ), ),
+          ),
+        ),
       ],
     );
   }

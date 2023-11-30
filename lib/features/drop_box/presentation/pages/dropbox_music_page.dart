@@ -1,4 +1,3 @@
-
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +11,6 @@ import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_notifier.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/dropbox_music_fetch_provider.dart';
 import 'package:music_app/features/drop_box/presentation/riverpod/user_info_provider.dart';
-
 
 part '../widgets/pull_to_refresh.dart';
 part '../widgets/dropbox_music_list.dart';
@@ -30,7 +28,9 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
     super.initState();
     Future(() {
       ref.read(dropboxMusicFetchProvider.notifier).initDropbox();
-      ref.read(dropboxMusicFetchProvider.notifier).checkAuthorized(true);
+      ref.read(dropboxMusicFetchProvider.notifier).checkAuthorized(
+            authorize: true,
+          );
       ref.read(dropBoxMusicDownloadProvider.notifier).getCachedMusicName();
     });
   }
@@ -44,13 +44,14 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
     final imageNotifier = ref.read(backgroundProvider.notifier);
     final userInfoState = ref.watch(userInfoProvider);
     final userInfoNotifier = ref.read(userInfoProvider.notifier);
+    final dropboxDownloadNotifier =
+        ref.read(dropBoxMusicDownloadProvider.notifier);
 
     ref
       ..listen(dropboxMusicFetchProvider, (previous, next) async {
         if (next == DropboxAuthState.loading) {
         } else {
           await userInfoNotifier.getAccountInfo();
-          //   await dropBoxFetchNotifier.listFolder('');
         }
       })
       ..listen(dropBoxMusicDownloadProvider, (previous, next) {
@@ -60,8 +61,10 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
             'from DropBox...',
             'Start Downloading',
           );
-        } if(next == DownloadState.success){
+        }
+        if (next == DownloadState.success) {
           audioQueryNotifier.querySongFromDropbox();
+          dropboxDownloadNotifier.getCachedMusicName();
         }
       });
 
@@ -69,12 +72,11 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
       backgroundColor: const Color(0xff350c44),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton.small(
-        onPressed: ()  {
-             dropBoxFetchNotifier.dropboxLogout();
-             Navigator.pop(context);
+        onPressed: () {
+          dropBoxFetchNotifier.dropboxLogout();
+          Navigator.pop(context);
         },
         child: const Icon(Icons.logout_outlined),
-
       ),
       body: Stack(
         children: [
@@ -171,7 +173,7 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Featured',
+                          Strings.featured,
                           maxLines: 1,
                           style: AppTextStyle.textStyleOne(
                             Colors.white,
@@ -180,7 +182,7 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
                           ),
                         ),
                         Text(
-                          'DropBox Music',
+                          Strings.downloadedSongs,
                           maxLines: 1,
                           style: AppTextStyle.textStyleOne(
                             Colors.white,
@@ -269,9 +271,9 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
                     margin: const EdgeInsets.only(top: 10),
                     height: 0.4.sh,
                     width: double.infinity,
-                    //  color: Colors.white,
-                    child: dropBoxFetchNotifier.musicList.isEmpty ?
-                    const PullToRefresh() : const DropboxMusicList(),
+                    child: dropBoxFetchNotifier.musicList.isEmpty
+                        ? const PullToRefresh()
+                        : const DropboxMusicList(),
                   ),
                 ],
               ),
@@ -280,5 +282,4 @@ class _DropBoxMusicPageState extends ConsumerState<DropBoxMusicPage> {
       ),
     );
   }
-
 }

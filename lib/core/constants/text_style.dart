@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 class AppTextStyle {
   static const headLineOne = TextStyle(
     color: Colors.black,
-    fontSize: 25.0,
+    fontSize: 25,
     fontWeight: FontWeight.w700,
   );
   static const smallTextOne = TextStyle(
     color: Colors.black,
-    fontSize: 14.0,
+    fontSize: 14,
     fontWeight: FontWeight.w500,
   );
 
   static const smallTextTwo = TextStyle(
     color: Colors.black,
-    fontSize: 14.0,
+    fontSize: 14,
     fontWeight: FontWeight.w400,
   );
 
