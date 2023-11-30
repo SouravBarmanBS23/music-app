@@ -38,7 +38,7 @@ dependencies:
   flutter_screenutil: 5.9.0
   firebase_auth: 4.12.1
   firebase_core: ^2.22.0
-  google_sign_in: 6.1.5
+  google_sign_in: 6.1.6
   firebase_storage: 11.4.1
   path_provider: 2.1.1
   animated_text_kit: 4.2.2
@@ -54,10 +54,10 @@ dependencies:
   media_scanner: 2.1.0
   on_audio_room: 2.2.1+1
   flutter_file_downloader: 1.1.4
-  input_form_field:
-    git:
-      url: git@github.com:momshaddinury/input_form_field.git
-      ref: version-0.0.6
+#  input_form_field:
+#    git:
+#      url: git@github.com:momshaddinury/input_form_field.git
+#      ref: version-0.0.6
   core:
     path: modules/core
   mime: ^1.0.4

@@ -1,11 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:core/core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:input_form_field/input_form_field.dart';
 import 'package:music_app/core/constants/app_color.dart';
 import 'package:music_app/core/constants/text_style.dart';
 import 'package:music_app/features/search/presentation/riverpod/music_search_provider.dart';
@@ -116,45 +113,45 @@ class _MusicSearchState extends ConsumerState<MusicSearch> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: InputFormField(
-                        onChanged: (value) {
-                          notifier.filterSongs(
-                            value.toString(),
-                          );
-                        },
-                        borderRadius: BorderRadius.circular(10),
-                        fillColor: const Color(0xfff6f7fb),
-                        textEditingController: notifier.searchController,
-                        validator: Validators.isValidPassword,
-                        hintTextStyle: AppTextStyle.textStyleOne(
-                          const Color(0xffC4C5C4),
-                          15.sp,
-                          FontWeight.w500,
-                        ),
-                        hintText: Strings.musicSearchHintText,
-                        borderType: BorderType.none,
-                        prefix: InkWell(
-                          onTap: () {
-                            notifier.filterSongs(
-                              notifier.searchController.text,
-                            );
-                          },
-                          child: const Icon(
-                            CupertinoIcons.search,
-                            color: Colors.black,
-                            size: 25,
-                            weight: 10,
-                          ),
-                        ),
-                        errorTextStyle: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.red,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 13,
-                          horizontal: 10,
-                        ),
-                      ),
+                      // child: InputFormField(
+                      //   onChanged: (value) {
+                      //     notifier.filterSongs(
+                      //       value.toString(),
+                      //     );
+                      //   },
+                      //   borderRadius: BorderRadius.circular(10),
+                      //   fillColor: const Color(0xfff6f7fb),
+                      //   textEditingController: notifier.searchController,
+                      //   validator: Validators.isValidPassword,
+                      //   hintTextStyle: AppTextStyle.textStyleOne(
+                      //     const Color(0xffC4C5C4),
+                      //     15.sp,
+                      //     FontWeight.w500,
+                      //   ),
+                      //   hintText: Strings.musicSearchHintText,
+                      //   borderType: BorderType.none,
+                      //   prefix: InkWell(
+                      //     onTap: () {
+                      //       notifier.filterSongs(
+                      //         notifier.searchController.text,
+                      //       );
+                      //     },
+                      //     child: const Icon(
+                      //       CupertinoIcons.search,
+                      //       color: Colors.black,
+                      //       size: 25,
+                      //       weight: 10,
+                      //     ),
+                      //   ),
+                      //   errorTextStyle: TextStyle(
+                      //     fontSize: 12.sp,
+                      //     color: Colors.red,
+                      //   ),
+                      //   contentPadding: const EdgeInsets.symmetric(
+                      //     vertical: 13,
+                      //     horizontal: 10,
+                      //   ),
+                      // ),
                     ),
                   ],
                 ),

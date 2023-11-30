@@ -10,8 +10,8 @@ import 'package:music_app/firebase_options.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
-  BindingBase.debugZoneErrorsAreFatal = true;
   WidgetsFlutterBinding.ensureInitialized();
+  BindingBase.debugZoneErrorsAreFatal = true;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

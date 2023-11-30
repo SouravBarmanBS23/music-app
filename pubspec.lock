@@ -459,10 +459,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_sign_in
-      sha256: f45038d27bcad37498f282295ae97eece23c9349fc16649154067b87b9f1fd03
+      sha256: "8f8b94880f2753ccb796744259da529674e49b9af2e372abf6978c590c0ebfef"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.5"
+    version: "6.1.6"
   google_sign_in_android:
     dependency: transitive
     description:
@@ -543,15 +543,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  input_form_field:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "version-0.0.6"
-      resolved-ref: "563a3f3a4da6329c8144288761ab990298d9b14d"
-      url: "git@github.com:momshaddinury/input_form_field.git"
-    source: git
-    version: "0.0.6"
   js:
     dependency: transitive
     description:

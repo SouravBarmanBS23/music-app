@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/core/constants/hive_db.dart';
 import 'package:music_app/core/constants/text_style.dart';
-import 'package:music_app/features/drop_box/presentation/pages/drop_box_test.dart';
 import 'package:music_app/features/drop_box/presentation/pages/dropbox_music_page.dart';
 import 'package:music_app/features/firebase_music/presentation/pages/firebase_music_page.dart';
 import 'package:music_app/features/firebase_music/presentation/riverpod/firebase_auth_provider.dart';
@@ -99,7 +98,7 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 0.1.sh),
-                  height: 0.20.sh,
+                  height: 0.15.sh,
                   width: double.infinity,
                   child: FittedBox(
                     child: Lottie.asset(
@@ -156,7 +155,6 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                             builder: (context) => const DropBoxMusicPage(),
                           ),
                         );
-
                       },
                       child: Container(
                         margin: EdgeInsets.only(top: 0.05.sh),
@@ -191,8 +189,7 @@ class _CloudDownloadPageState extends ConsumerState<CloudDownloadPage> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                      },
+                      onTap: () {},
                       child: Container(
                         margin: EdgeInsets.only(top: 0.02.sh),
                         height: 60,
